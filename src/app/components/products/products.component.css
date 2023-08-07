@@ -1,0 +1,15 @@
+#collapseWidthExample{
+  /* transition: width 0.5s; */
+  background-color: rgb(233, 243, 251);
+  transition-timing-function: ease-in;
+}
+.mdi{
+  font-size: 130%;
+}
+a:link {
+  text-decoration: none;
+  text-emphasis-color: black;
+}
+.form-label{
+  font-weight: bold;
+}

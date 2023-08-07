@@ -1,0 +1,13 @@
+.title{
+    font-size: 3em;
+}
+.img-thumbnail{
+    width: 120px;
+}
+#title{
+    font-size: 2em;
+    font-weight: bold;
+}
+.summary{
+    background-color: gainsboro;
+}
