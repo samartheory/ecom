@@ -79,19 +79,19 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item text-end">
                                         <div class="row">
-                                            <div class="col text-start">
+                                            <!-- <div class="col text-start">
                                                 <button type="button" class="btn btn-primary">Add to Cart</button>
-                                            </div>
-                                            <!-- <div>
-                                                <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(item.id) else quantitySetter" (click)="addToCart.increaseQuantity(reqProduct.id)">Add to Cart</button>
-                                                <ng-template #quantitySetter>
+                                            </div> -->
+                                            <div>
+                                                <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(item.id)" (click)="addToCart.increaseQuantity(item.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
+                                                <ng-template [ngIf]="!addToCart.toDisplay(item.id)">
                                                     <div class="input-group w-6">
-                                                    <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
-                                                    <input type="text" class="form-control" [(ngModel)]="quanMap.get(item.id)">
-                                                    <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
+                                                    <button type="button" class="btn btn-secondary" (click)="addToCart.decreaseQuantity(item.id)">-</button>
+                                                    <input type="text" class="form-control" [value]="addToCart.getQuantity(item.id)" (change)="addToCart.updateQuantity(item.id,quantitySpy.value)" #quantitySpy readonly>
+                                                    <button type="button" class="btn btn-secondary" (click)="addToCart.increaseQuantity(item.id)">+</button>
                                                     </div>
                                                 </ng-template>
-                                            </div> -->
+                                            </div>
                                             <div class="col p-2">{{item.rating}} ★</div>
                                         </div>
                                     </li>

@@ -14,7 +14,7 @@ export class ProductDetailsComponent {
   allProducts:any;
   reqProduct:any;
   quantity:any;
-  constructor(private route: ActivatedRoute,private productData : ProductGetService,private router:Router,public addToCart : AddToCartService,private toast : ToastService) {
+  constructor(private route: ActivatedRoute,private productData : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
     this.productId = this.route.snapshot.paramMap.get('id') as string;
     if(this.productId){
       this.getServiceSubscribe()
@@ -28,18 +28,16 @@ export class ProductDetailsComponent {
       if(!this.reqProduct){
         this.router.navigate(['/not-found'])
       }
-      console.log(this.reqProduct + "this");
     });
   }
   commas(price:number){
     return price.toLocaleString();
   }
-  addToCartVisible(){
-    return true;
-  }
+
   increaseQuantity(){
     this.addToCart.increaseQuantity(this.productId)
     this.updateQuantity()
+    this.toast.handleSuccess("Item Added to Cart")
   }
   decreaseQuantity(){
     this.addToCart.decreaseQuantity(this.productId)

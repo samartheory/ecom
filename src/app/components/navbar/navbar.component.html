@@ -6,7 +6,10 @@
         Increff | eShop
       </a>
     </div>
-    <a class="mdi mdi-cart flex-shrink-1 me-2" (click)="redirectToCart()"></a>
-    <div class="mdi mdi-account-circle flex-shrink-1 me-2"></div>
+    <a class="mdi mdi-cart flex-shrink-1 me-2 position-relative" (click)="redirectToCart()"><div
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="getTotal() > 0">
+        {{getTotal()}}
+      </div></a>
+    <div class="mdi mdi-account-circle flex-shrink-1 me-2" (click)="redirectLogin()"></div>
   </div>
 </nav>

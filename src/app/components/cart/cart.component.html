@@ -4,11 +4,11 @@
             Cart
         </div>
     </div>
-    <div class="row mt-2">
-            <div *ngFor="let item of getAllItemsInCart()" class="mt-3">
-                <span *ngIf="toShow(item.id)" class="d-flex gap-3">
+    <div class="row mt-2" *ngIf="addToCart.getTotalItemsInCart(allProducts) > 0 else isEmpty">
+            <div *ngFor="let item of inCart" class="mt-3">
+            <span *ngIf="toShow(item.id)" class="d-flex gap-3 justify-content-lg-start" #itemCard>
                 <div>
-                    <img src="{{item.thumbnail}}" class="img-thumbnail" alt="...">
+                    <img src="{{item.thumbnail}}" class="img-fluid img-aspect" alt="...">
                 </div>
                 <div>
                     <div #title>
@@ -18,23 +18,44 @@
                         {{item.brand}}
                     </div>
                     <div>
-                        {{commas(item.price)}}
+                        ₹{{commas(item.price)}}
                     </div>
                 </div>
-                        <div class="input-group d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
-                        <input type="text" class="form-control"  [value]="addToCart.getQuantity(item.id)" (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>
-                        <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
-                        <button type="button" class="btn btn-danger" (click)="removeItem(item.id)"><span class="mdi mdi-trash-can-outline"></span></button>
-                        </div>
-                </span>
+                <div class="input-group align-content-around">
+                    <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
+                    <input type="number" class="form-control" [value]="addToCart.getQuantity(item.id)"
+                        (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>
+                    <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
+                    <button type="button" class="btn btn-danger" (click)="removeItem(item.id)"><span
+                            class="mdi mdi-trash-can-outline"></span></button>
                 </div>
-                <button type="button" class="btn btn-primary btn-sm mt-3 w-25 text">Clear Cart</button>
+            </span>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mt-3 w-25" (click)="clearCart()">Clear Cart</button>
+            <button type="button" class="btn btn-primary btn-sm mt-3 w-25" [disabled]="!userLoggedIn()">Place Order</button>
     </div>
 
-    <div class="row mt-3">
-        <div class="d-flex justify-content-end summary">
-            Total
-        </div>
-    </div> 
+    <div class="row mt-3 summary" *ngIf="addToCart.getTotalItemsInCart(allProducts) > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                  </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of inCart">
+                    <td>₹{{commas(item.price)}}</td>
+                    <td>{{itemQuantity(item.id)}}</td>
+                </tr>
+                <tr>
+                    <td #total>Total</td>
+                    <td>₹{{commas(totalPrice)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<ng-template #isEmpty>
+    <div id="emptyText"><i class="mdi mdi-robot-happy-outline"></i>Add Some Items!</div>
+</ng-template>

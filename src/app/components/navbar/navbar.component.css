@@ -18,3 +18,7 @@ display:block;
 .mdi-account-circle{
   font-size: 2em;
 }
+.badge{
+  font-size: 10px;
+  transform: translate(-65%,0%)!important;
+}

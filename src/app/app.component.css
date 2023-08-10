@@ -2,3 +2,8 @@
     margin : 10px;
     font-size: 3em;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

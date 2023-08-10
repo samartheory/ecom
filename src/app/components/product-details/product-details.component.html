@@ -30,11 +30,11 @@
         <span class="mdi mdi-star-outline ms-4"> {{reqProduct.rating}} / 5</span>
       </div>
       <div>
-        <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="increaseQuantity()">Add to Cart</button>
+        <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="increaseQuantity();toast.handleSuccess('Added To Cart')">Add to Cart</button>
       <ng-template #quantitySetter>
         <div class="input-group w-6">
           <button type="button" class="btn btn-secondary" (click)="decreaseQuantity()">-</button>
-          <input type="text" class="form-control" [(ngModel)]="quantity" readonly>
+          <input type="number" class="form-control" [(ngModel)]="quantity" readonly>
           <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
         </div>
       </ng-template>

@@ -3,6 +3,8 @@ import { ProductGetService } from 'src/app/services/product-get.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AddToCartService } from 'src/app/services/add-to-cart.service';
 import { CurrencyPipe } from '@angular/common';
+import { ToastService } from 'src/app/services/toast.service';
+
 let allProducts:any;
 
 @Component({
@@ -14,7 +16,7 @@ export class ProductsComponent {
   productList : any;
   reqProduct:any;
   quanMap = new Map<string,string>();
-  constructor(private productData : ProductGetService,public addToCart:AddToCartService){
+  constructor(private productData : ProductGetService,public addToCart:AddToCartService,public toast:ToastService){
     productData.products().subscribe((data)=>{
       this.allProducts = data;
       this.productList = allProducts.products;
@@ -31,7 +33,6 @@ export class ProductsComponent {
     currentRating = this.filterForm.get('rating')?.value;
     this.productList = allProducts.products.filter((num:any) => num.price <= currentPrice)
     this.productList = this.productList.filter((num:any) => num.rating >= currentRating)
-    console.log(this.productList)
   }
   randomNumber(){
     return (Math.random()*5.0).toFixed(1);

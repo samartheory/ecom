@@ -11,3 +11,17 @@
 .summary{
     background-color: gainsboro;
 }
+.img-aspect{
+    aspect-ratio: 1;
+    width: 9em;
+}
+.input-group{
+    width: 25%;
+}
+.itemCard{
+    border-color: azure;
+    border-width: 10px;
+}
+#emptyText{
+    font-size: 2em;
+}

@@ -20,6 +20,18 @@ export class AddToCartService {
     return localStorage.getItem(id)
   }
 
+  getTotalItemsInCart(allProducts:any){
+    let nos = 0
+    if(allProducts){
+    for(let obj of allProducts.products){
+      if(localStorage.getItem(obj.id)){
+        nos++
+      }
+    }
+  }
+    return nos
+  }
+
   updateQuantity(id: any, newQuantity: any) {
     let oldQuantity: any = localStorage.getItem(id)
     if (oldQuantity) {
@@ -59,5 +71,13 @@ export class AddToCartService {
 
   removeItem(id: any){
     localStorage.removeItem(id)
+  }
+
+  clearCart(allProducts:any){
+    for(let obj of allProducts.products){
+      if(localStorage.getItem(obj.id)){
+        this.removeItem(obj.id)
+      }
+    }
   }
 }

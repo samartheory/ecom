@@ -13,6 +13,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
 import { ToastComponent } from './components/toast/toast.component';
 import { CartComponent } from './components/cart/cart.component';
+import { CommonModule } from '@angular/common';
+import { LoggedInComponent } from './components/logged-in/logged-in.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,15 +24,18 @@ import { CartComponent } from './components/cart/cart.component';
     ProductDetailsComponent,
     NotFoundComponent,
     ToastComponent,
-    CartComponent
+    CartComponent,
+    LoggedInComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
+  exports: [FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
