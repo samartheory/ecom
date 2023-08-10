@@ -1,5 +1,7 @@
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AddToCartService } from 'src/app/services/add-to-cart.service';
+import { CsvService } from 'src/app/services/csv.service';
 import { LoginService } from 'src/app/services/login.service';
 import { ProductGetService } from 'src/app/services/product-get.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -18,7 +20,7 @@ export class CartComponent {
  totalPrice:any;
 @ViewChild('quantity') inputQuantity!: ElementRef<HTMLInputElement>;
 
- constructor(private productData : ProductGetService, public addToCart : AddToCartService,public toast:ToastService,private login:LoginService){
+ constructor(private productData : ProductGetService, public addToCart : AddToCartService,public toast:ToastService,private login:LoginService,private router:Router,private csv:CsvService){
   productData.products().subscribe((data)=>{
     this.allProducts = data;
     this.productList = this.allProducts.products;
@@ -114,5 +116,14 @@ export class CartComponent {
 
  userLoggedIn(){
   return this.login.isLoggedIn()
+ }
+
+ placeOrder(){
+  if(this.login.isLoggedIn()){
+    this.csv.convertJSONToCSV(this.inCart)
+  }
+  else{
+    this.router.navigate(['/login/fromcart'])
+  }
  }
 }

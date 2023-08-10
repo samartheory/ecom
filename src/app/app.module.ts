@@ -15,6 +15,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
+import { CsvOpsComponent } from './components/csv-ops/csv-ops.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { LoggedInComponent } from './components/logged-in/logged-in.component';
     NotFoundComponent,
     ToastComponent,
     CartComponent,
-    LoggedInComponent
+    LoggedInComponent,
+    CsvOpsComponent
   ],
   imports: [
     BrowserModule,

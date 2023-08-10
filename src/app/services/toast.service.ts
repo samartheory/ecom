@@ -12,7 +12,6 @@ export class ToastService {
   constructor() { }
   
   handleSuccess(message: string) {
-    console.log(message)
     let content:TOASTCONTENT = {
       type: 'success',
       message: message

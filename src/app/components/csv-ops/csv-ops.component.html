@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-6 part">
+            CSV Upload
+        </div>
+        <div class="col-6 part">
+            CSV Output
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <form #uploadForm="ngForm" (ngSubmit)="submit(uploadForm.value)">
+            <input type="file" accept=".csv" name="uploadCsv" ngModel #uploadSpy="ngModel"/>
+            <br>
+            <button type="submit" click>Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
