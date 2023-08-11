@@ -11,27 +11,20 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private login:LoginService,private router:Router,private toast:ToastService,private location:Location){
-
+  fromCart:any
+  constructor(private login:LoginService,private router:Router,private toast:ToastService,private location:Location,private route:ActivatedRoute){
+    if(login.isLoggedIn()){
+      router.navigate(['/loggedin'])
+    }
   }
-  // @ViewChild('emailSpy') emailSpy : any;
-
-  // getEmail(){
-  //   console.log(this.emailSpy?.invalid)
-  //   if(this.emailSpy?.invalid){
-  //     console.log("Email is required ");
-  //   }
-  // }
-  // checkValid(){
-  //   if(this.emailSpy.valid){
-  //     console.log("email is valid")
-  //   }else{
-  //     console.log("email is invalid")
-  //   }
-  // }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.fromCart = params['fromCart'];
+    });
+  }
   submit(form:HTMLFormElement){
     if(this.login.loginAttempt(form['email'],form['password'])){
-      if(this.location.path()){
+      if(this.fromCart === "yes"){        
         this.router.navigate(['/cart'])
       }
       else{

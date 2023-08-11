@@ -123,7 +123,7 @@ export class CartComponent {
     this.csv.convertJSONToCSV(this.inCart)
   }
   else{
-    this.router.navigate(['/login/fromcart'])
+    this.router.navigate(['/login'],{queryParams:{fromCart:"yes"}})
   }
  }
 }

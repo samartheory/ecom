@@ -10,7 +10,9 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class LoggedInComponent {
   constructor(private login:LoginService,private router:Router,private toast:ToastService){
-    
+    if(!login.isLoggedIn()){
+      router.navigate(['/login'])
+    }
   }
 
   logOut(){

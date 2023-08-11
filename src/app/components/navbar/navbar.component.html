@@ -1,5 +1,5 @@
 <nav class="navbar bg-secondary-subtle sticky-top">
-  <div class="d-flex">
+  <div class="d-flex ms-3">
     <div class="p-1 w-100">
       <a class="navbar-brand" (click)="redirectToProducts()">
         <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
@@ -10,8 +10,7 @@
         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="getTotal() > 0">
         {{getTotal()}}
       </div></a>
-    <div class="mdi mdi-file-upload-outline me-3" routerLink="/upload"></div>
-    <div class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="redirectLogin()"></div>
-    
+    <a class="mdi mdi-file-upload-outline me-3" routerLink="/upload"></a>
+    <a class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="redirectLogin()"></a>
   </div>
 </nav>
