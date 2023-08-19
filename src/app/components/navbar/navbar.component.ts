@@ -13,8 +13,8 @@ let allProducts:any;
 })
 
 export class NavbarComponent {
-
-  constructor(private router: Router,public addToCart : AddToCartService,private productData : ProductGetService,private login:LoginService)
+  isDropdownOpen = false;
+  constructor(private router: Router,public addToCart : AddToCartService,private productData : ProductGetService,public login:LoginService)
    {
     productData.products().subscribe((data)=>{
       allProducts = data;
@@ -30,7 +30,7 @@ export class NavbarComponent {
   }
 
   getTotal(){
-    return this.addToCart.getTotalItemsInCart(allProducts)
+    return this.addToCart.getTotalItemsInCart()
   }
 
   redirectLogin(){
@@ -40,5 +40,9 @@ export class NavbarComponent {
     else{
       this.router.navigate(['/login'])
     }
+  }
+
+  logOut(){
+    this.login.logOut()
   }
 }

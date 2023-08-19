@@ -1,107 +1,76 @@
-<div class="container">
-    <div class="d-flex align-items-baseline">
-        <button class="btn btn-primary mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-            <div class="d-flex align-items-center">
-                <div>
-                    Filters
-                </div>
-                <div class="mdi mdi-filter-outline pe-1">
-
-                </div>
-            </div>
-        </button>
-        <!-- <div class="dropdown ms-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="d-flex">
-                    <div>
-                        Sort
-                    </div>
-                    <div class="mdi mdi-sort pe-1">
-    
-                    </div>
-                </div>
-            </button>
-            <ul class="dropdown-menu">
-            <li><a class="dropdown-item" (click)="aToZSort()">Price(Low to High)</a></li>
-            <li><a class="dropdown-item" (click)="ztoASort()">Price(High to Low)</a></li>
-            <li><a class="dropdown-item" (click)="alphabeticallySort()">Alphabetically</a></li>
-            <li><a class="dropdown-item" (click)="ratingSort()">Rating</a></li>
-            </ul>
-        </div> -->
-        <div class="dropdown ms-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="me-2">Sort</span>
-                <i class="mdi mdi-sort pe-1"></i>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" (click)="aToZSort()">Price(Low to High)</a></li>
-                <li><a class="dropdown-item" (click)="ztoASort()">Price(High to Low)</a></li>
-                <li><a class="dropdown-item" (click)="alphabeticallySort()">Alphabetically</a></li>
-                <li><a class="dropdown-item" (click)="ratingSort()">Rating</a></li>
-                </ul>
-        </div>
-    </div>
-    <div class="row mt-sm-5 gap-4">
-        <div class="col-2 p-4 collapse collapse-horizontal" id="collapseWidthExample">
-            <form [formGroup]="filterForm" (ngSubmit)="updateProducts()">
+<div class="row gap-4 m-4">
+    <div class="col-2  filter-sort sticky-top">
+         <!-- todo change this to template reference forms -->
+        <form #filterForm="ngForm" (ngSubmit)="updateProducts(filterForm.value)" class="mt-3">
             <div>
                 <label for="price" class="form-label">Price</label>
-                <input type="range" class="form-range" min="1" max="200000" step="100" id="price" formControlName="price">
+                <input type="range" class="form-range" min="1" max="200000" step="100" id="price" name="price" (ngModelChange)="updatePriceFilter(priceSpy)" [ngModel]="currentPrice" #priceSpy="ngModel">
                 <div class="d-flex justify-content-between">
-                    <div>0</div>
-                    <div>-</div>
-                    <div>₹{{this.filterForm.get('price')?.value}}</div>
-                    <div>
-                    <!-- <input type="text" class="form-control" [value]="filterForm.get('price')?.value" (input)="updatePrice(filterForm.get('price')?.value.toString())"> -->
-                    </div>
+                    <span>0</span>
+                    <span>-</span>
+                    <!-- todo convert the divs into span/p -->
+                    <span>₹{{currentPrice}}</span>
                 </div>
             </div>
             <div>
-                <label for="rating" class="form-label mt-3">Rated Above {{this.filterForm.get('rating')?.value}}★</label>
-                <input type="range" class="form-range" min="0" max="5" step="0.1" id="rating" formControlName="rating">
+                <label for="rating" class="form-label mt-3">Rated Above {{currentRating}}★</label>
+                <input type="range" class="form-range" min="0" max="5" step="0.1" id="rating" name="rating" ngModel (ngModelChange)="updateRatingFilter(ratingSpy)" [ngModel]="currentRating" #ratingSpy="ngModel">
             </div>
-            <button class="btn btn-primary" type="submit">Filter</button>
-        </form>
-        </div>
-        <div class="col p-2" style="background-color: white;">
-            <div>
-                <div class="row p-2">
-                    <div *ngFor="let item of productList" class="col-sm-4">
-                        <div>
-                            <div class="card mb-3">
-                                <a [routerLink]="['/product-detail', item.id]">
-                                    <img src="{{item.thumbnail}}" class="card-img-top" alt="..." style="aspect-ratio: 1;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{item.title}}</h5>
-                                        <p class="card-text">₹{{item.price}} | {{item.seller}}</p>
-                                    </div>
-                                </a>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item text-end">
-                                        <div class="row">
-                                            <!-- <div class="col text-start">
-                                                <button type="button" class="btn btn-primary">Add to Cart</button>
-                                            </div> -->
-                                            <div>
-                                                <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(item.id)" (click)="addToCart.increaseQuantity(item.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
-                                                <ng-template [ngIf]="!addToCart.toDisplay(item.id)">
-                                                    <div class="input-group w-6">
-                                                    <button type="button" class="btn btn-secondary" (click)="addToCart.decreaseQuantity(item.id)">-</button>
-                                                    <input type="text" class="form-control" [value]="addToCart.getQuantity(item.id)" (change)="addToCart.updateQuantity(item.id,quantitySpy.value)" #quantitySpy readonly>
-                                                    <button type="button" class="btn btn-secondary" (click)="addToCart.increaseQuantity(item.id)">+</button>
-                                                    </div>
-                                                </ng-template>
-                                            </div>
-                                            <div class="col p-2">{{item.rating}} ★</div>
+            <button class="btn btn-primary btn-sm" type="submit">Filter <i class="mdi mdi-filter"></i></button>
+            <div class="dropdown mt-2">
+                <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="me-2">Sort</span>
+                    <i class="mdi mdi-sort"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="lowToHighSort()">Price(Low to High)</a></li>
+                    <li><a class="dropdown-item" (click)="highToLowSort()">Price(High to Low)</a></li>
+                    <li><a class="dropdown-item" (click)="alphabeticallySort()">Alphabetically</a></li>
+                    <li><a class="dropdown-item" (click)="ratingSort()">Rating</a></li>
+                    </ul>
+            </div>
+        </form>   
+    </div>
+    <div class="col p-2">
+            <!-- todo remove empty divs -->
+            <div class="row p-2">
+                <div *ngFor="let item of productList" class="col-sm-4">
+                        <div class="card mb-3">
+                            <!-- todo change card heights -->
+                            <!-- todo change card number to 4 cards -->
+                            
+                            <a [routerLink]="['/product-detail', item.id]">
+                                <img src="{{item.thumbnail}}" class="card-img-top thumbnail" alt="...">
+                                <!-- todo remove inline styles use bootstrap classes -->
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.title}}</h5>
+                                    <p class="card-text">₹{{item.price|number:'1.2-2'}} | {{item.seller}}</p>
+                                </div>
+                            </a>
+                            <!-- todo remove all ul and li tags create the content within the card using grids -->
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-end">
+                                    <div class="row">
+                                        <!-- <div class="col text-start">
+                                            <button type="button" class="btn btn-primary">Add to Cart</button>
+                                        </div> -->
+                                            <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(item.id)" (click)="addToCart.addNewItem(item.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
+                                            <ng-template [ngIf]="!addToCart.toDisplay(item.id)">
+                                                <div class="input-group">
+                                                <button type="button" class="btn btn-secondary" (click)="addToCart.decreaseQuantity(item.id)">-</button>
+                                                <input type="number" class="form-control" [value]="addToCart.getQuantity(item.id)"
+                        (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>
+                                                <!-- todo make input editable add only number validation decimal not valid-->
+                                                <button type="button" class="btn btn-secondary" (click)="addToCart.increaseQuantity(item.id)">+</button>
+                                                </div>
+                                            </ng-template>
                                         </div>
-                                    </li>
-                                    <li class="list-group-item">{{item.description}}</li>
-                                </ul>
-                            </div>
+                                        <div class="col p-2">{{item.rating}} ★</div>
+                                </li>
+                                <li class="list-group-item">{{item.description}}</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
-</div>

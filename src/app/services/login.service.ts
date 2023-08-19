@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AddToCartService } from './add-to-cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class LoginService {
       if(email == obj.email && password == obj.password){
         localStorage.setItem("loggedIn","true")
         localStorage.setItem("email",email)
+        if(!localStorage.getItem(email)){
+          localStorage.setItem(email,"[]")
+        }
+        this.mergeCarts()
         return true
       }
     }
@@ -37,5 +42,34 @@ export class LoginService {
 
   isLoggedIn(){
     return localStorage.getItem("loggedIn") == "true" ? true : false 
+  }
+
+  mergeCarts(){
+    let email:any
+    if(this.getEmail()){
+      email = this.getEmail()
+    }
+    let guestJsonString:any = localStorage.getItem("guestCart")
+    let userJsonString:any = localStorage.getItem(email)
+    let guestJson:any = JSON.parse(guestJsonString)
+    let userJson:any = JSON.parse(userJsonString)
+
+    for(let gObj of guestJson){
+      let ifPresent:boolean = false
+      for(let uObj of userJson){
+        if(gObj.id == uObj.id){
+          uObj.quantity = parseInt(uObj.quantity) + parseInt(gObj.quantity)
+          ifPresent = true
+          break
+        }
+      }
+      if(!ifPresent){
+        userJson.push(gObj)
+      }
+    }
+
+    userJsonString = JSON.stringify(userJson)
+    localStorage.setItem(email,userJsonString)
+    localStorage.setItem("guestCart","[]")
   }
 }

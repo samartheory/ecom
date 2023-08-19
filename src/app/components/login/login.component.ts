@@ -37,3 +37,8 @@ export class LoginComponent {
     }
   }
 }
+// todo add current user login name
+// todo redirect user to product page when loggedin
+// todo dropdown for logout
+// todo partition of guest cart and user cart and merge them accordingly
+// todo add footer

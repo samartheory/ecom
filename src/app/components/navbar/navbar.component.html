@@ -11,6 +11,14 @@
         {{getTotal()}}
       </div></a>
     <a class="mdi mdi-file-upload-outline me-3" routerLink="/upload"></a>
-    <a class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="redirectLogin()"></a>
+    <!-- <a class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="handleLoginClick()"></a> -->
+    <div class="dropdown">
+      <a class="dropdown-toggle mdi mdi-account-circle flex-shrink-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
+      </a>
+      <ul class="dropdown-menu me-4">
+          <li *ngIf="login.isLoggedIn()"><a class="dropdown-item" (click)="logOut()">Logout</a></li>
+          <li *ngIf="!login.isLoggedIn()"><a class="dropdown-item" (click)="redirectLogin()">Login</a></li>
+      </ul>
+  </div>
   </div>
 </nav>

@@ -13,3 +13,13 @@ a:link {
 .form-label{
   font-weight: bold;
 }
+
+.filter-sort{
+  background-color: #e2e3e5;
+  top: 7rem;
+  height: 80vh;
+  border-radius: 0.5rem;
+}
+.thumbnail{
+aspect-ratio: 1;
+}

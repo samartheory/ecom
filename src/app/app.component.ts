@@ -9,5 +9,8 @@ export class AppComponent {
     constructor(){
       if(!localStorage.getItem("loggedIn"))
       localStorage.setItem("loggedIn","false")
+
+      if(!localStorage.getItem("guestCart"))
+      localStorage.setItem("guestCart","[]")
     }
 }

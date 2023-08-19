@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductGetService } from 'src/app/services/product-get.service';
 import { AddToCartService } from 'src/app/services/add-to-cart.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
@@ -30,20 +31,30 @@ export class ProductDetailsComponent {
       }
     });
   }
-  commas(price:number){
-    return price.toLocaleString();
-  }
 
   increaseQuantity(){
     this.addToCart.increaseQuantity(this.productId)
     this.updateQuantity()
-    this.toast.handleSuccess("Item Added to Cart")
   }
   decreaseQuantity(){
+    console.log("ded");
+    
     this.addToCart.decreaseQuantity(this.productId)
     this.updateQuantity()
   }
   updateQuantity(){
     this.quantity = this.addToCart.getQuantity(this.productId)
   }
+
+  cartQuantity(id:any,element:any){
+    let newQuantity:any = element.value
+    if(parseInt(newQuantity) >= 0){
+      this.addToCart.updateQuantity(id,newQuantity)
+    }
+    else if(typeof(parseInt(newQuantity)) == 'number'){
+      let quan:any = this.addToCart.getQuantity(id)
+      element.value = quan
+    }
+  }
 }
+

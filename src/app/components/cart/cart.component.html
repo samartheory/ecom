@@ -4,14 +4,13 @@
             Cart
         </div>
     </div>
-    <div class="row mt-2" *ngIf="addToCart.getTotalItemsInCart(allProducts) > 0 else isEmpty">
+    <div class="row mt-2" *ngIf="addToCart.getTotalItemsInCart() > 0 else isEmpty">
         <table class="table">    
             <thead>
                 <tr>
                     <th scope="col">Image</th>
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
                     <th scope="col">Total</th>
                     <!-- <th scope="col"></th> -->
                 </tr>
@@ -27,13 +26,10 @@
                             {{item.title}}
                         </td>
                         <td>
-                            ₹{{commas(item.price)}}
+                            ₹{{(item.price)|number:'1.2-2'}}
                         </td>
                         <td>
-                            quantity
-                        </td>
-                        <td>
-                            ₹ price x quantity
+                            ₹{{getTotal(item.id,item.price)|number:'1.2-2'}}
                         </td>
                     <!-- </div> -->
                     <td>
@@ -56,25 +52,8 @@
         </div>
     </div>
 
-    <div class="row mt-3 summary" *ngIf="addToCart.getTotalItemsInCart(allProducts) > 0">
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                  </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of inCart">
-                    <td>₹{{commas(item.price)}}</td>
-                    <td>{{itemQuantity(item.id)}}</td>
-                </tr>
-                <tr>
-                    <td #total>Total</td>
-                    <td>₹{{commas(totalPrice)}}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="row mt-3 summary" *ngIf="addToCart.getTotalItemsInCart() > 0">
+                    Total : ₹{{(totalPrice)|number:'1.2-2'}}
     </div>
 </div>
 <ng-template #isEmpty>
