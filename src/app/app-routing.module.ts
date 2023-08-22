@@ -5,7 +5,6 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CartComponent } from './components/cart/cart.component';
 import { LoginComponent } from './components/login/login.component';
-import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { CsvOpsComponent } from './components/csv-ops/csv-ops.component';
 
 const routes: Routes = [
@@ -14,7 +13,6 @@ const routes: Routes = [
   {path:'cart',component:CartComponent},
   {path:'login',component:LoginComponent},
   {path:'login/fromcart',component:LoginComponent},
-  {path:'loggedin',component:LoggedInComponent},
   {path:'upload',component:CsvOpsComponent},
   {path: '**',component:NotFoundComponent}
 ];

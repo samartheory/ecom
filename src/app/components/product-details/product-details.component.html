@@ -4,7 +4,7 @@
     <div class="col-5" >
       <!-- todo explore position  -->
       <!-- <img src="" alt="prod" style="aspect-ratio: 1;" width="500px"> -->
-      <div id="carouselExample" class="carousel slide" style="height: 100%;">
+      <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <!-- todo use parent container for image sizing -->
@@ -41,7 +41,6 @@
           <!-- todo use pipes instead commas -->
           <span class="mdi mdi-star-outline ms-4"> {{reqProduct?.rating}} / 5</span>
         </div>
-        <div>
           <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="addToCart.addNewItem(reqProduct.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
           <ng-template #quantitySetter>
             <div class="input-group w-6">
@@ -52,7 +51,6 @@
               <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
             </div>
           </ng-template>
-        </div>
         <div>{{reqProduct?.description}} It is a long established fact that a reader will be distracted by the readable
           content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
           normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable

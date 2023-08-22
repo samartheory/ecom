@@ -1,3 +1,6 @@
 .input-group {
     width: 40%;
 }
+.carousel,.slide{
+    height: 100%;
+}

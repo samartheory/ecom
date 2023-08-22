@@ -24,9 +24,7 @@ export class ToastComponent {
   ngOnInit() {    
     this.toastService.showToast.subscribe(data => {
       if(data?.type == 'success')  {
-        
         this.successMessage = data?.message;
-        console.log(this.successMessage)
         this.errorToast.hide();
         this.successToast.show();  
       } else if(data.type == 'error') {

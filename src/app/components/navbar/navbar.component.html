@@ -1,24 +1,38 @@
 <nav class="navbar bg-secondary-subtle sticky-top">
   <div class="d-flex ms-3">
     <div class="p-1 w-100">
+    
       <a class="navbar-brand" (click)="redirectToProducts()">
-        <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+          <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
         Increff | eShop
       </a>
     </div>
+    <!-- <span class="fs-6 me-3 bold fw-bold" style="opacity: 20%">admin@increff.com</span> -->
     <a class="mdi mdi-cart flex-shrink-1 me-3 position-relative" (click)="redirectToCart()"><div
         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="getTotal() > 0">
         {{getTotal()}}
       </div></a>
-    <a class="mdi mdi-file-upload-outline me-3" routerLink="/upload"></a>
+    <a class="mdi mdi-file-upload-outline " routerLink="/upload"></a>
     <!-- <a class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="handleLoginClick()"></a> -->
-    <div class="dropdown">
-      <a class="dropdown-toggle mdi mdi-account-circle flex-shrink-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
-      </a>
-      <ul class="dropdown-menu me-4">
-          <li *ngIf="login.isLoggedIn()"><a class="dropdown-item" (click)="logOut()">Logout</a></li>
-          <li *ngIf="!login.isLoggedIn()"><a class="dropdown-item" (click)="redirectLogin()">Login</a></li>
-      </ul>
-  </div>
+    <div class="dropdown p-1" *ngIf="ifLoggedIn() else accountButton">
+      <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{getUsername()}}
+      </button>
+      <div class="dropdown-menu">
+        <span><a class="dropdown-item" (click)="logOut()">Log Out</a></span>
+      </div>
+    </div>
+    
+    
   </div>
 </nav>
+
+<ng-template #accountButton>
+  <div class="dropdown ms-3" *ngIf="ifLogin()">
+    <a class="dropdown-toggle mdi mdi-account-circle flex-shrink-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
+    </a>
+    <div class="dropdown-menu dropdown-menu-end">
+        <span><a class="dropdown-item" (click)="redirectLogin()">Login</a></span>
+    </div>
+</div>
+</ng-template>

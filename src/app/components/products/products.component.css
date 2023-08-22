@@ -3,6 +3,11 @@
   background-color: rgb(233, 243, 251);
   transition-timing-function: ease-in;
 }
+input-min{
+  /* border-radius: 1em; */
+  border-color: red !important;
+  /* border-width: 10px; */
+}
 .mdi{
   font-size: 130%;
 }

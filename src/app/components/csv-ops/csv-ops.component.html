@@ -1,34 +1,50 @@
-<div class="container">
-    <div class="row mt-4">
-        <div class="col part">
-            Upload CSV
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-3">
-            <input type="file" accept=".csv" name="uploadCsv" (change)="getFile($event)"/>
-        </div>
-    </div>
-    <div class="row mt-3" >
-        <div class="col-3" *ngIf="errors.length > 0; else noErrors">
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Error(s)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let error of errors">
-                    <td>{{error}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <div class="px-4">
 
-<ng-template  #noErrors>
-    <div *ngIf="csvData.length > 0">
-        Successfull!
-    </div> 
-</ng-template>
+        <div class="row mt-4">
+            <div class="col part">
+                Upload CSV
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-3">
+                    <label for="formFile" class="form-label"></label>
+                    <input class="form-control" type="file" id="formFile" (change)="getFile($event)">
+                    <button class="btn btn-primary btn-sm mt-3"  (click)="submit()">Process</button>
+                <!-- <input type="file" accept=".csv" name="uploadCsv" (change)="getFile($event)"/> -->
+                <!-- //todo use bootstrap upload -->
+            </div>
+        </div>
+        <div class="row mt-3" >
+            <div class="col-12" *ngIf="errors.length > 0; else noErrors">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Error(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let error of errors">
+                        <td>{{error}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    </div>
+    <ng-template  #noErrors>
+        <div *ngIf="toDisplay">
+            <table class="table">
+                <tbody>
+                    <ng-container *ngFor="let data of csvData; let i = index">
+                      <tr>
+                        <ng-container *ngFor="let item of data">
+                            <th *ngIf="i == 0">{{item}}</th>
+                            <td *ngIf="i != 0">{{item}}</td>
+                        </ng-container>
+                      </tr>
+                    </ng-container>
+                  </tbody>                  
+            </table>
+        </div> 
+    </ng-template>

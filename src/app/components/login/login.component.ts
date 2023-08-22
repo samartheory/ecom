@@ -14,7 +14,7 @@ export class LoginComponent {
   fromCart:any
   constructor(private login:LoginService,private router:Router,private toast:ToastService,private location:Location,private route:ActivatedRoute){
     if(login.isLoggedIn()){
-      router.navigate(['/loggedin'])
+      router.navigate(['/products'])
     }
   }
   ngOnInit() {
@@ -42,3 +42,5 @@ export class LoginComponent {
 // todo dropdown for logout
 // todo partition of guest cart and user cart and merge them accordingly
 // todo add footer
+
+//todo when user is not logged in show login icon with login text

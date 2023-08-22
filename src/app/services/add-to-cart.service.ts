@@ -85,23 +85,13 @@ export class AddToCartService {
 
   // NEW CART FUNCTIONS //
 
-  createGuestCart(){
-    localStorage.setItem("guestCart","[]")
-  }
-
-  createUserCart(email:string){
-    localStorage.setItem(email,"{}")
-  }
-
   mergeCarts(){
     let email:any
     if(this.login.getEmail()){
       email = this.login.getEmail()
     }
-    let guestJsonString:any = localStorage.getItem("guestCart")
-    let userJsonString:any = localStorage.getItem(email)
-    let guestJson:any = JSON.parse(guestJsonString)
-    let userJson:any = JSON.parse(userJsonString)
+    let guestJson:any = this.jsonParse(localStorage.getItem("guestCart"))
+    let userJson:any = this.jsonParse(localStorage.getItem(email))
 
     for(let gObj of guestJson){
       let ifPresent:boolean = false
@@ -117,24 +107,20 @@ export class AddToCartService {
       }
     }
 
-    userJsonString = JSON.stringify(userJson)
-    localStorage.setItem(email,userJsonString)
+    localStorage.setItem(email,JSON.stringify(userJson))
     localStorage.setItem("guestCart","[]")
   }
 
   addNewItem(id:string){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
-    let item:any = {"id":id,"quantity":"1"}
-    jsonObj.push(item)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
+    jsonObj.push({"id":id,"quantity":"1"})
     localStorage.setItem(cartType,JSON.stringify(jsonObj))
   }
 
   increaseQuantity(id:string){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
       if(obj.id == id){
         obj.quantity = parseInt(obj.quantity) + 1
@@ -146,8 +132,7 @@ export class AddToCartService {
 
   decreaseQuantity(id:string){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
       if(obj.id == id){      
         if(parseInt(obj.quantity) == 1){
@@ -167,8 +152,7 @@ export class AddToCartService {
 
   removeItem(id:string){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     jsonObj = jsonObj.filter((item:any) => item.id !== id)
     localStorage.setItem(cartType,JSON.stringify(jsonObj))
   }
@@ -191,8 +175,7 @@ export class AddToCartService {
 
   toDisplay(id:any){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
       if(obj.id == id){
         return false
@@ -203,8 +186,7 @@ export class AddToCartService {
 
   getQuantity(id: any){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj = JSON.parse(jsonString)
+    let jsonObj = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
       if(obj.id == id){
         return obj.quantity
@@ -214,8 +196,7 @@ export class AddToCartService {
 
   getTotalItemsInCart(){
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     return jsonObj.length
   }
 
@@ -225,8 +206,8 @@ export class AddToCartService {
       return
     }
     let cartType:any = this.getCartType()
-    let jsonString:any = localStorage.getItem(cartType)//todo put string and object in one line
-    let jsonObj:any = JSON.parse(jsonString)
+    let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))//todo put string and object in one line
+
     //todo include parse fail case and clear the cart / create a new fucntion
     for(let obj of jsonObj){
       if(obj.id == id){
@@ -235,5 +216,40 @@ export class AddToCartService {
     }
     //todo validate before fetching from local storage everywhere and in case of corruption clear the cart
     localStorage.setItem(cartType,JSON.stringify(jsonObj))//todo remove the item if the value is invalid
+  }
+
+  jsonParse(jsonString:any){
+    let jsonObj:any = []
+    try{
+      jsonObj = JSON.parse(jsonString)
+    }
+    catch(error){
+      console.error("JSON parsing error: "+error)
+      return jsonObj
+    }
+    
+    for(let obj of jsonObj){
+    //no of fields check
+      if(Object.keys(obj).length != 2){
+        console.error("JSON obj do not have 2 fields");
+        return []
+      }
+    //fields name valid check
+      if(!obj.id || !obj.quantity){
+        console.error("JSON obj do not contain id/quantity");
+        return []
+      }
+    //valid value check
+      let id:string = obj.id.toString()
+      if(id == "" || id == undefined || id == null){
+        console.error("JSON obj has invalid id");
+        return []
+      }
+      if(!parseInt(obj.quantity)){
+        console.error("JSON obj has invalid quantity");
+        return []
+      }
+    }
+    return jsonObj
   }
 }

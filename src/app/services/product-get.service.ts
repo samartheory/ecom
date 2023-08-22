@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 export class ProductGetService {
 
   constructor(private http:HttpClient) { }
-  products(){
+  getProducts(){
     return this.http.get('../../assets/products.json')
   }
 }

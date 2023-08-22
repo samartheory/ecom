@@ -15,7 +15,7 @@ export class ProductDetailsComponent {
   allProducts:any;
   reqProduct:any;
   quantity:any;
-  constructor(private route: ActivatedRoute,private productData : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
+  constructor(private route: ActivatedRoute,private productGetService : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
     this.productId = this.route.snapshot.paramMap.get('id') as string;
     if(this.productId){
       this.getServiceSubscribe()
@@ -23,7 +23,7 @@ export class ProductDetailsComponent {
     this.updateQuantity()
   }
   getServiceSubscribe(){
-    this.productData.products().subscribe((data) => {
+    this.productGetService.getProducts().subscribe((data) => {
       this.allProducts = data;
       this.reqProduct = this.allProducts.products.find((product: any) => product.id == this.productId);
       if(!this.reqProduct){
@@ -37,8 +37,6 @@ export class ProductDetailsComponent {
     this.updateQuantity()
   }
   decreaseQuantity(){
-    console.log("ded");
-    
     this.addToCart.decreaseQuantity(this.productId)
     this.updateQuantity()
   }
@@ -48,12 +46,17 @@ export class ProductDetailsComponent {
 
   cartQuantity(id:any,element:any){
     let newQuantity:any = element.value
+    if(isNaN(newQuantity)){
+      this.toast.handleError("Quantity received is invalid")
+      return
+    }
     if(parseInt(newQuantity) >= 0){
       this.addToCart.updateQuantity(id,newQuantity)
     }
-    else if(typeof(parseInt(newQuantity)) == 'number'){
+    else {//todo remove the number validation use isNaN
       let quan:any = this.addToCart.getQuantity(id)
-      element.value = quan
+      element.value = quan//todo throw a toast for -ve values
+      this.toast.handleError("Quantity can't be negative")
     }
   }
 }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, ComponentFactoryResolver } from '@angular/core';
 import { Router } from '@angular/router';
 import { AddToCartService } from 'src/app/services/add-to-cart.service';
 import { LoginService } from 'src/app/services/login.service';
@@ -14,9 +15,9 @@ let allProducts:any;
 
 export class NavbarComponent {
   isDropdownOpen = false;
-  constructor(private router: Router,public addToCart : AddToCartService,private productData : ProductGetService,public login:LoginService)
+  constructor(private router: Router,public addToCart : AddToCartService,private productGetService : ProductGetService,public login:LoginService,public location:Location)
    {
-    productData.products().subscribe((data)=>{
+    productGetService.getProducts().subscribe((data)=>{
       allProducts = data;
     });
   }
@@ -34,15 +35,25 @@ export class NavbarComponent {
   }
 
   redirectLogin(){
-    if(this.login.isLoggedIn()){
-      this.router.navigate(['/loggedin'])
-    }
-    else{
       this.router.navigate(['/login'])
-    }
   }
 
   logOut(){
     this.login.logOut()
+    this.router.navigate(['/login'])
+  }
+
+  getUsername(){
+    return this.login.getEmail()
+  }
+
+  ifLogin(){
+    if(this.location.path() == '/login') return false;
+    return true;
+  }
+
+  ifLoggedIn(){
+    if(this.location.path() == '/login')return false;
+    return this.login.isLoggedIn()
   }
 }

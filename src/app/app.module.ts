@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { ToastComponent } from './components/toast/toast.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CommonModule } from '@angular/common';
-import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { CsvOpsComponent } from './components/csv-ops/csv-ops.component';
 import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
@@ -27,7 +26,6 @@ import { FooterComponent } from './components/footer/footer.component';
     NotFoundComponent,
     ToastComponent,
     CartComponent,
-    LoggedInComponent,
     CsvOpsComponent,
     FooterComponent
   ],

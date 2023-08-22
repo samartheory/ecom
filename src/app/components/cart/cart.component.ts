@@ -19,8 +19,8 @@ export class CartComponent {
  totalPrice:any;
 @ViewChild('quantity') inputQuantity!: ElementRef<HTMLInputElement>;
 
- constructor(private productData : ProductGetService, public addToCart : AddToCartService,public toast:ToastService,private login:LoginService,private router:Router,private csv:CsvService){
-  productData.products().subscribe((data)=>{
+ constructor(private productGetService : ProductGetService, public addToCart : AddToCartService,public toast:ToastService,private login:LoginService,private router:Router,private csv:CsvService){
+  productGetService.getProducts().subscribe((data)=>{
     let allProducts:any
     allProducts = data;
     this.productList = allProducts.products;
