@@ -23,7 +23,7 @@ export class CartComponent {
   productGetService.getProducts().subscribe((data)=>{
     let allProducts:any
     allProducts = data;
-    this.productList = allProducts.products;
+    this.productList = allProducts?.products;
     this.updateCart()
   });
  }
@@ -54,14 +54,19 @@ export class CartComponent {
 
  updateQuantity(id:any,element:any){  
   let newQuantity:any = element.value
-  if(parseInt(newQuantity) >= 0){
-    this.addToCart.updateQuantity(id,newQuantity)
-    this.updateCart()
+  if(isNaN(newQuantity)){
+    this.toast.handleError("Quantity received is invalid")
+    return
   }
-  else if(typeof(parseInt(newQuantity)) == 'number'){
+  if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
     let quan:any = this.addToCart.getQuantity(id)
-    element.value = quan
-  }
+    element.value = quan//todo throw a toast for -ve values
+    if(parseInt(newQuantity) < 0) this.toast.handleError("Quantity can't be negative")
+    else this.toast.handleError("Quanity should not be fractional")
+    return
+  }//todo decimal should not pass
+  this.addToCart.updateQuantity(id,newQuantity)
+  this.updateTotalPrice()
  }
 // todo to make json strings in local storage
  increaseQuantity(id:any){
@@ -104,9 +109,9 @@ export class CartComponent {
  updateTotalPrice(){
   let total:number = 0
   for(let obj of this.inCart){
-    let quan = this.addToCart.getQuantity(obj.id)
+    let quan = this.addToCart.getQuantity(obj?.id)
     if(quan)
-      total += parseInt(obj.price)*parseInt(quan)
+      total += parseInt(obj?.price)*parseInt(quan)
   }
   this.totalPrice = total
  }
@@ -121,6 +126,7 @@ export class CartComponent {
     this.addToCart.clearCart()
   }
   else{
+    this.toast.handleSuccess("Please Login")
     this.router.navigate(['/login'],{queryParams:{fromCart:"yes"}})
   }
  }

@@ -44,7 +44,7 @@ export class NavbarComponent {
   }
 
   getUsername(){
-    return this.login.getEmail()
+    return this.login?.getEmail()
   }
 
   ifLogin(){
@@ -54,6 +54,6 @@ export class NavbarComponent {
 
   ifLoggedIn(){
     if(this.location.path() == '/login')return false;
-    return this.login.isLoggedIn()
+    return this.login?.isLoggedIn()
   }
 }

@@ -96,8 +96,8 @@ export class AddToCartService {
     for(let gObj of guestJson){
       let ifPresent:boolean = false
       for(let uObj of userJson){
-        if(gObj.id == uObj.id){
-          uObj.quantity = parseInt(uObj.quantity) + parseInt(gObj.quantity)
+        if(gObj?.id == uObj?.id){
+          uObj.quantity = parseInt(uObj?.quantity) + parseInt(gObj?.quantity)
           ifPresent = true
           break
         }
@@ -107,7 +107,7 @@ export class AddToCartService {
       }
     }
 
-    localStorage.setItem(email,JSON.stringify(userJson))
+    localStorage.setItem(email,JSON?.stringify(userJson))
     localStorage.setItem("guestCart","[]")
   }
 
@@ -122,8 +122,8 @@ export class AddToCartService {
     let cartType:any = this.getCartType()
     let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
-      if(obj.id == id){
-        obj.quantity = parseInt(obj.quantity) + 1
+      if(obj?.id == id){
+        obj.quantity = parseInt(obj?.quantity) + 1
         break
       }
     }
@@ -134,15 +134,15 @@ export class AddToCartService {
     let cartType:any = this.getCartType()
     let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
     for(let obj of jsonObj){
-      if(obj.id == id){      
-        if(parseInt(obj.quantity) == 1){
-        console.log(obj.id,id);
-          jsonObj = jsonObj.filter((item:any) => item.id != id)//changing jsonObj while iterting
+      if(obj?.id == id){      
+        if(parseInt(obj?.quantity) == 1){
+        console.log(obj?.id,id);
+          jsonObj = jsonObj.filter((item:any) => item?.id != id)//changing jsonObj while iterting
           console.log((jsonObj));
           
         }
         else{
-        obj.quantity = parseInt(obj.quantity) - 1
+        obj.quantity = parseInt(obj?.quantity) - 1
         }
         break;
       }
@@ -153,7 +153,7 @@ export class AddToCartService {
   removeItem(id:string){
     let cartType:any = this.getCartType()
     let jsonObj:any = this.jsonParse(localStorage.getItem(cartType))
-    jsonObj = jsonObj.filter((item:any) => item.id !== id)
+    jsonObj = jsonObj.filter((item:any) => item?.id !== id)
     localStorage.setItem(cartType,JSON.stringify(jsonObj))
   }
 
@@ -161,7 +161,7 @@ export class AddToCartService {
     let cartType:any = "guestCart"
     if(this.login.isLoggedIn()){
       if(this.login.getEmail()){
-        let email:any = this.login.getEmail()
+        let email:any = this.login?.getEmail()
         cartType = email
       }
     }
@@ -247,6 +247,10 @@ export class AddToCartService {
       }
       if(!parseInt(obj.quantity)){
         console.error("JSON obj has invalid quantity");
+        return []
+      }
+      if(!(parseFloat(obj.quantity)%1 == 0)){
+        console.error("JSON obj has decimal quantity");
         return []
       }
     }

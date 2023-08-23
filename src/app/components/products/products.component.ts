@@ -13,15 +13,15 @@ import { ToastService } from 'src/app/services/toast.service';
 export class ProductsComponent {
   allProducts:any;
   productList : any;
-  reqProduct:any;
-  priceMax:number = 200000
+  priceMax:number = 150000
   priceMin:number = 0
   currentRating:number = 0
+  sortedIn:string = 'none'
   constructor(private productGetService : ProductGetService,public addToCart:AddToCartService,public toast:ToastService){
     //todo correcting service/function naming convention
     productGetService.getProducts().subscribe((data)=>{
       this.allProducts = data;
-      this.productList = this.allProducts.products;
+      this.productList = this.allProducts?.products;
       // console.log(this.productList)
     });
   }
@@ -41,10 +41,7 @@ export class ProductsComponent {
       return
     }
     this.productList = this.applyFilter()
-  }
-
-  updateRatingFilter(spy:any){
-    this.currentRating = spy.value
+    this.preSort()
   }
 
   updateQuantity(id:any,element:any){  
@@ -53,7 +50,7 @@ export class ProductsComponent {
       this.toast.handleError("Quantity received is invalid")
       return
     }
-    if(parseInt(newQuantity) < 0 || !Number.isInteger(newQuantity)){
+    if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
       let quan:any = this.addToCart.getQuantity(id)
       element.value = quan//todo throw a toast for -ve values
       if(parseInt(newQuantity) < 0) this.toast.handleError("Quantity can't be negative")
@@ -64,25 +61,48 @@ export class ProductsComponent {
    }
 
   lowToHighSort(){
-    this.productList.sort((a:any,b:any)=> a.price - b.price)
+    this.productList.sort((a:any,b:any)=> a?.price - b?.price);
+    this.sortedIn = "lowToHighSort";
   }
 
   highToLowSort(){
-    this.productList.sort((a:any,b:any)=> b.price - a.price)
+    this.productList.sort((a:any,b:any)=> b?.price - a?.price);
+    this.sortedIn = "highToLowSort";
   }
 
   ratingSort(){
-    this.productList.sort((a:any,b:any)=> b.rating - a.rating)
+    this.productList.sort((a:any,b:any)=> b?.rating - a?.rating);
+    this.sortedIn = "ratingSort";
   }
 
   alphabeticallySort(){
-    this.productList.sort((a:any,b:any)=> a.title.localeCompare(b.title))
+    this.productList.sort((a:any,b:any)=> a?.title.localeCompare(b?.title));
+    this.sortedIn = "alphabeticallySort";
   }
 
+  preSort(){
+    switch (this.sortedIn) {
+      case 'lowToHighSort':
+        this.lowToHighSort()
+        break;
+      case 'highToLowSort':
+        this.highToLowSort()
+        break;
+      case 'ratingSort':
+        this.ratingSort()
+        break;
+      case 'alphabeticallySort':
+        this.alphabeticallySort()
+        break;
+      default:
+        return;
+    }
+  }
+  
   applyFilter(){
     let afterFilter:any = []
-    for(let item of this.allProducts.products){
-      if(item.price < this.priceMax && item.price >= this.priceMin && item.rating >= this.currentRating)
+    for(let item of this.allProducts?.products){
+      if(item?.price < this.priceMax && item?.price >= this.priceMin && item?.rating >= this.currentRating)
         afterFilter.push(item)
     }
     return afterFilter

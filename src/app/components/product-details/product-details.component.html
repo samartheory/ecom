@@ -1,64 +1,60 @@
 <div class="container">
   <!-- todo use either container or row/column-->
   <div class="row mt-5">
-    <div class="col-5" >
+    <div class="col-lg-5 col-md-6 col-sm-10" >
       <!-- todo explore position  -->
       <!-- <img src="" alt="prod" style="aspect-ratio: 1;" width="500px"> -->
-      <div id="carouselExample" class="carousel slide">
+      <div id="product-carousel" class="carousel slide m-2">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <!-- todo use parent container for image sizing -->
             <!-- todo images classes -->
-            <div class="w-100 ">
-              <img src={{reqProduct.thumbnail}}  class="img-fluid my-auto" alt="...">
-            </div>
+              <!-- <img src={{reqProduct.thumbnail}}  class="img-fluid my-auto" alt="..."> -->
+              <img src={{reqProduct.thumbnail}}  class="img-fluid aspect-1 rounded" alt="...">
           </div>
           <div *ngFor="let image of reqProduct.images">
             <div class="carousel-item">
-              <div class="w-100">
-              <img src="{{image}}" class="img-fluid" alt="...">
-              </div>
+              <img src="{{image}}" class="img-fluid aspect-1 rounded" alt="...">
             </div>
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#product-carousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#product-carousel" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
         </button>
       </div>
     </div>
-    <div class="col ps-4 ">
+    <div class="col-sm-6 col-md-6 col-lg-6">
       <div class="d-flex flex-column align-items-start">
+        <div class="fs-5 fw-bold text-muted">{{reqProduct.brand}}</div>
       <!-- todo dont use col and d-flex in same class -->
         <div class="fs-1">{{reqProduct.title}}</div>
         <!-- todo use bootstrap classes for font size -->
         <div class="d-flex align-items-baseline">
-          <div class="price fs-3">₹{{reqProduct.price|number:'1.2-2' }}</div>
+          <div class="price fs-4">₹{{reqProduct.price|number:'1.2-2' }}</div>
           <!-- todo use pipes instead commas -->
-          <span class="mdi mdi-star-outline ms-4"> {{reqProduct?.rating}} / 5</span>
+          <span class=" ms-4 fs-4"><i class="mdi mdi-star text-warning"></i> {{reqProduct?.rating}} / 5</span>
         </div>
           <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="addToCart.addNewItem(reqProduct.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
-          <ng-template #quantitySetter>
-            <div class="input-group w-6">
-              <button type="button" class="btn btn-secondary" (click)="decreaseQuantity()">-</button>
-              <!-- <input type="number" class="form-control" [(ngModel)]="quantity" readonly> -->
-              <input type="number" class="form-control" [value]="addToCart.getQuantity(reqProduct.id)"
-                        (change)="cartQuantity(reqProduct.id,quantitySpy)" #quantitySpy>
-              <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
-            </div>
-          </ng-template>
-        <div>{{reqProduct?.description}} It is a long established fact that a reader will be distracted by the readable
-          content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
-          normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable
-          English. 
+        <div>
+          {{reqProduct?.description}}
         </div>
       </div>
     </div>
 
   </div>
 </div>
-<app-toast></app-toast>
+
+<ng-template #quantitySetter>
+  <span class="input-group mt-2 mb-3 width-10">
+    <button type="button" class="btn btn-secondary" (click)="decreaseQuantity()">-</button>
+    <!-- <input type="number" class="form-control" [(ngModel)]="quantity" readonly> -->
+    <input type="number" class="form-control" [value]="addToCart.getQuantity(reqProduct.id)"
+              (change)="cartQuantity(reqProduct.id,quantitySpy)" #quantitySpy>
+    <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
+    <button type="button" class="btn btn-danger"
+      (click)="addToCart.removeItem(reqProduct.id)"><i class="mdi mdi-trash-can-outline"></i></button>
+  </span>
+</ng-template>

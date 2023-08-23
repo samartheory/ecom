@@ -16,7 +16,7 @@ export class ProductDetailsComponent {
   reqProduct:any;
   quantity:any;
   constructor(private route: ActivatedRoute,private productGetService : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
-    this.productId = this.route.snapshot.paramMap.get('id') as string;
+    this.productId = this.route.snapshot.paramMap?.get('id') as string;
     if(this.productId){
       this.getServiceSubscribe()
     }
@@ -25,7 +25,7 @@ export class ProductDetailsComponent {
   getServiceSubscribe(){
     this.productGetService.getProducts().subscribe((data) => {
       this.allProducts = data;
-      this.reqProduct = this.allProducts.products.find((product: any) => product.id == this.productId);
+      this.reqProduct = this.allProducts?.products?.find((product: any) => product.id == this.productId);
       if(!this.reqProduct){
         this.router.navigate(['/not-found'])
       }
@@ -50,14 +50,14 @@ export class ProductDetailsComponent {
       this.toast.handleError("Quantity received is invalid")
       return
     }
-    if(parseInt(newQuantity) >= 0){
-      this.addToCart.updateQuantity(id,newQuantity)
-    }
-    else {//todo remove the number validation use isNaN
+    if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
       let quan:any = this.addToCart.getQuantity(id)
       element.value = quan//todo throw a toast for -ve values
-      this.toast.handleError("Quantity can't be negative")
-    }
+      if(parseInt(newQuantity) < 0) this.toast.handleError("Quantity can't be negative")
+      else this.toast.handleError("Quanity should not be fractional")
+      return
+    }//todo decimal should not pass
+    this.addToCart.updateQuantity(id,newQuantity)
   }
 }
 
