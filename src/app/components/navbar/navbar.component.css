@@ -1,27 +1,4 @@
-  /* .navbar.bg-body-tertiary, .container-fluid {
-    background-color: rgb(224, 174, 184);
-} */
-/* .logo{
-    margin-left: 5%;
-}
-.navbar-header{
-    
-} */
-.navbar{
---bs-navbar-brand-padding-y: 0.4rem;
-display:block;
---bs-navbar-brand-font-size: 1.50rem;
-}
-.mdi-cart{
-  font-size: 2em;
-}
-.mdi-account-circle{
-  font-size: 2em;
-}
-.mdi-file-upload-outline{
-  font-size: 2em;
-}
 .badge{
-  font-size: 10px;
-  transform: translate(-65%,0%)!important;
+  font-size: 0.5rem;
+  transform: translate(-74%,0%)!important;
 }

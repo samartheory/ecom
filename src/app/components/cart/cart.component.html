@@ -1,77 +1,68 @@
 <div class="container">
-    <div class="row">
-        <div class="col-4 mt-4 title">
+        <span class="fs-2">
             Cart
-        </div>
-    </div>
+        </span>      
     <div class="row mt-2" *ngIf="addToCart.getTotalItemsInCart() > 0 else isEmpty">
-        <table class="table">    
-            <thead>
-                <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of inCart" >
-                <!-- <tr class="d-flex gap-3 justify-content-lg-start" #itemCard> -->
-                    <td>
-                        <img src="{{item.thumbnail}}" class="img-fluid img-aspect rounded" alt="...">
-                    </td>
-                    <!-- <div> -->
-                        <td class="fs-5">
-                            {{item.title}}
+        <div class="col-10">
+            <table class="table align-middle">    
+                <thead>
+                    <tr>
+                        <th scope="col" class="sticky-top table-top bg-light">Image</th>
+                        <th scope="col" class="sticky-top table-top bg-light">Name</th>
+                        <th scope="col" class="sticky-top table-top bg-light">Price</th>
+                        <th scope="col" class="sticky-top table-top bg-light">Total Price</th>
+                        <th scope="col" class="sticky-top table-top bg-light">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of inCart" >
+                        <td [routerLink]="['/product-detail', item.id]">
+                            <div class="ratio ratio-1x1 img-width">
+                                <img src="{{item.thumbnail}}" class="img-fluid img-aspect rounded" alt="...">
+                            </div>
                         </td>
-                        <td class="fs-5">
-                            ₹{{(item.price)|number:'1.2-2'}}
+                            <td >
+                                {{item.title}}
+                            </td>
+                            <td >
+                                ₹{{(item.price)|number:'1.2-2'}}
+                            </td>
+                            <td >
+                                ₹{{getQuantityTotal(item.id,item.price)|number:'1.2-2'}}
+                            </td>
+                        <td >
+                            <div class="input-group">
+                                <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
+                                <input type="number" class="w-2 border text-center" [value]="addToCart.getQuantity(item.id)"
+                                    (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>  
+                                <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
+                                <button type="button" class="btn btn-danger" (click)="removeItem(item.id)"><span
+                                    class="mdi mdi-trash-can-outline"></span></button>
+                            </div>
+                            
                         </td>
-                        <td class="fs-5">
-                            ₹{{getTotal(item.id,item.price)|number:'1.2-2'}}
-                        </td>
-                    <!-- </div> -->
-                    <td >
-                        <!-- <div class="input-group align-content-around"> -->
-                        <!-- <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
-                        <input type="number" class="form-control" [value]="addToCart.getQuantity(item.id)"
-                            (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>  
-                        <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
-                        <button type="button" class="btn btn-danger" (click)="removeItem(item.id)"><span
-                            class="mdi mdi-trash-can-outline"></span></button> -->
-                        <!-- </div> -->
-
-                        <div class="input-group">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
-                            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
-                        </div>
-                    </td>
-                <!-- </tr> -->
-            </tr> 
-            <tr>
-                <td>
-                    <div class="fs-2" *ngIf="addToCart.getTotalItemsInCart() > 0">
-                        ₹{{(totalPrice)|number:'1.2-2'}}/-
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-danger  " (click)="clearCart()">Clear Cart</button>
-                        <button type="button" class="btn btn-secondary ms-2" (click)="placeOrder()">Place Order</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </tr> 
+                </tbody>
+            </table>
+            <div *ngIf="addToCart.getTotalItemsInCart() > 0">
+                ₹{{(totalPrice)|number:'1.2-2'}}/-
+            </div>
+            <div class="d-flex">
+                <button type="button" class="btn btn-danger  " (click)="clearCart()">Clear Cart</button>
+                <button type="button" class="btn btn-secondary ms-2" (click)="placeOrder()">Place Order</button>
+            </div>
+        </div>
         
     </div>
 
 </div>
 <ng-template #isEmpty>
-    <div id="emptyText"><i class="mdi mdi-robot-happy-outline"></i>Add Some Items!</div>
+    <div class="fs-2">
+        <i class="mdi mdi-robot-happy-outline me-2"></i>
+        <span>
+            Add Some Items!
+        </span>
+    </div>
 </ng-template>
+
+<!-- todo to change total layout -->

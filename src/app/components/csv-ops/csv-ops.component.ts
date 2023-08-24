@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
 import * as Papa from 'papaparse';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -10,18 +9,18 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./csv-ops.component.css']
 })
 export class CsvOpsComponent {
+  @ViewChild('fileInput') fileInput: any;
   constructor(private toast:ToastService){}
-  toDisplay:boolean = false
-  csvData:any
-  errors:any[] = []
-  correctCsvHeaders:any[] = ["id","title","price","brand","quantity"]
+  public toDisplay:boolean = false
+  public csvData:any
+  public errors:any[] = []
+  public correctCsvHeaders:any[] = ["id","title","price","brand","quantity"]
 
   getFile(event : any){
     Papa.parse(event.target?.files?.[0],{
       header: true,
       complete: (results) =>{
         this.toDisplay = false;
-        this.csvData = [];
         this.errors = [];
         this.csvData = results?.data;                              
       }
@@ -29,12 +28,15 @@ export class CsvOpsComponent {
   }
 
   submit(){
-    if(this.errors.length == 0) this.validJson();
-    
+    if(this.errors?.length == 0) this.validateJson();
+    this.fileInput.nativeElement.value=''
   }
   
-  validJson(){
-    if(!this.csvData) return;
+  validateJson(){
+    if(!this.csvData){
+      this.toast.handleError("No file selected");
+      return;
+    }
     //empty file check
     if(this.csvData?.length == 0){      
       this.errors.push("Empty CSV");
@@ -43,7 +45,7 @@ export class CsvOpsComponent {
     }
     
     for(let indexColumn in this.csvData){      
-      if(Object.keys(this.csvData?.[indexColumn]).length != 5){
+      if(Object.keys(this.csvData?.[indexColumn])?.length != 5){
         this.errors.push("column:"+ (Number(indexColumn)+1) + " doesn't have 5 fields");
         this.toast.handleError("Error in CSV file");
         continue;
@@ -51,6 +53,7 @@ export class CsvOpsComponent {
       let i:number =-1;
       for(let csvHeader in this.csvData?.[indexColumn]){
         i++;
+        console.log(i);
         if(csvHeader != this.correctCsvHeaders[i]){
           if(!csvHeader) this.errors.push("Empty " + this.correctCsvHeaders[i] + " header");
           else this.errors.push(csvHeader+" instead of "+this.correctCsvHeaders[i] + " @ column:1");
@@ -64,7 +67,7 @@ export class CsvOpsComponent {
           this.toast.handleError("Error in CSV file");
           continue;
         }
-        if(!curValue || curValue == '\n\n' || curValue.length == 0){
+        if(!curValue || curValue == '\n\n' || curValue?.length == 0){
           this.errors.push("Empty "+ this.correctCsvHeaders[i] + " @ column:" + (Number(indexColumn)+2))
           this.toast.handleError("Error in CSV file");
           continue;
@@ -85,15 +88,6 @@ export class CsvOpsComponent {
       this.toDisplay = true;
       this.toast.handleSuccess("Success");
     }
-//todo empty the choose file component as you click on process
-    // id,title,description,price,discount,rating,brand,category,thumbnail,images
-    //thead valid name check
-
-    //todo change loops into for in loop
-
-    //thead valid values check
-
-    //todo put safe check operator everywhere
   }
 
 

@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  currentDateTime: string = '';
+  public currentDateTime: string = '';
   ngOnInit() {
     this.updateTime(); // Initial call
     setInterval(() => {

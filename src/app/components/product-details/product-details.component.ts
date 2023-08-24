@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductGetService } from 'src/app/services/product-get.service';
 import { AddToCartService } from 'src/app/services/add-to-cart.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
@@ -11,21 +10,20 @@ import { DecimalPipe } from '@angular/common';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent {
-  productId: string = "";
-  allProducts:any;
-  reqProduct:any;
-  quantity:any;
+  private productId: string = "";
+  private allProducts:any;
+  public reqProduct:any;
+  private quantity:any;
   constructor(private route: ActivatedRoute,private productGetService : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
     this.productId = this.route.snapshot.paramMap?.get('id') as string;
-    if(this.productId){
-      this.getServiceSubscribe()
-    }
+    if(this.productId) this.getAllProducts()
     this.updateQuantity()
   }
-  getServiceSubscribe(){
+
+  getAllProducts(){
     this.productGetService.getProducts().subscribe((data) => {
       this.allProducts = data;
-      this.reqProduct = this.allProducts?.products?.find((product: any) => product.id == this.productId);
+      this.reqProduct = this.allProducts?.products?.find((product: any) => product?.id == this.productId);
       if(!this.reqProduct){
         this.router.navigate(['/not-found'])
       }
@@ -52,11 +50,14 @@ export class ProductDetailsComponent {
     }
     if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
       let quan:any = this.addToCart.getQuantity(id)
-      element.value = quan//todo throw a toast for -ve values
-      if(parseInt(newQuantity) < 0) this.toast.handleError("Quantity can't be negative")
-      else this.toast.handleError("Quanity should not be fractional")
+      element.value = quan
+      this.toast.handleError(parseInt(newQuantity) < 0 ? "Quantity can't be negative" : "Quanity should not be fractional")
       return
-    }//todo decimal should not pass
+    }
+    if(parseInt(newQuantity) > 99){ 
+      this.toast.handleError("Max quantity can not be more than 99")
+      newQuantity = 99;
+    }
     this.addToCart.updateQuantity(id,newQuantity)
   }
 }

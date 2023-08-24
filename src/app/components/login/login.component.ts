@@ -11,36 +11,23 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  fromCart:any
+  private fromCart:any
   constructor(private login:LoginService,private router:Router,private toast:ToastService,private location:Location,private route:ActivatedRoute){
-    if(login.isLoggedIn()){
-      router.navigate(['/products'])
-    }
+    if(login.isLoggedIn()) router.navigate(['/products'])
   }
-  ngOnInit() {
+  
+  ngOnInit(){
     this.route.queryParams.subscribe(params => {
       this.fromCart = params['fromCart'];
     });
   }
+
   submit(form:HTMLFormElement){
     if(this.login.loginAttempt(form['email'],form['password'])){
-      if(this.fromCart === "yes"){        
-        this.router.navigate(['/cart'])
-      }
-      else{
-      this.router.navigate(['/products'])
-      }
+      this.fromCart === "yes" ? this.router.navigate(['/cart']) : this.router.navigate(['/products'])
       this.toast.handleSuccess("Logged In!")
+      return;
     }
-    else{
-      this.toast.handleError("Invalid Credentials")
-    }
+    this.toast.handleError("Invalid Credentials")
   }
 }
-// todo add current user login name
-// todo redirect user to product page when loggedin
-// todo dropdown for logout
-// todo partition of guest cart and user cart and merge them accordingly
-// todo add footer
-
-//todo when user is not logged in show login icon with login text

@@ -1,62 +1,56 @@
-    <div class="px-4">
-
-        <div class="row mt-4">
-            <div class="col part">
-                Upload CSV
-            </div>
-        </div>
-        <div class="row ">
-            <div class="col-sm-6 col-md-4 col-xl-3">
-                    <label for="formFile" class="form-label"></label>
-                    <input class="form-control" type="file" id="formFile" (change)="getFile($event)">
-                    <!-- <label for="formFileLg" class="form-label"></label>
-                    <input class="form-control form-control-lg" id="formFileLg" type="file" (change)="getFile($event)"> -->
-                    <button class="btn btn-primary  mt-3"  (click)="submit()">Process</button>
-                <!-- <input type="file" accept=".csv" name="uploadCsv" (change)="getFile($event)"/> -->
-                <!-- //todo use bootstrap upload -->
-            </div>
-        </div>
-        <div class="row mt-3" >
-            <div class="col-12" *ngIf="errors.length > 0; else noErrors">
-                <table class="table">
-                    <thead>
-                        <tr>
-                        <th scope="col">Error(s)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let error of errors">
-                        <td>{{error}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    
+<div class="ms-3 mt-1">
+    <span class="fs-2">
+        Upload CSV
+    </span>
+    <br>
+    <div class="mt-2 d-inline-flex">
+            <label for="form-file" class="form-label"></label>
+            <input class="form-control me-2" type="file" id="form-file" accept=".csv"  (change)="getFile($event)" #fileInput>      
+            <button class="btn btn-primary"  (click)="submit()">Process</button>
     </div>
-    <ng-template  #noErrors>
-        <div *ngIf="toDisplay">
+    <div class="row mt-3" >
+        <div class="col-6" *ngIf="errors.length > 0; else noErrors">
             <table class="table">
                 <thead>
                     <tr>
-                        <th *ngFor="let csvHeader of correctCsvHeaders">
-                            {{csvHeader}}
-                        </th>
+                    <th scope="col">Error(s)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let row of csvData">
-                      <tr>
-                        <!-- <ng-container *ngFor="let col of row"> -->
-                            <td> {{row.id}}</td>
-                            <td> {{row.title}}</td>
-                            <td> {{row.price}}</td>
-                            <td> {{row.brand}}</td>
-                            <td> {{row.quantity}}</td>
-                        <!-- </ng-container> -->
-                      </tr>
-                    </ng-container>
-                  </tbody>                  
+                <tr *ngFor="let error of errors">
+                    <td>{{error}}</td>
+                </tr>
+                </tbody>
             </table>
-        </div> 
-    </ng-template>
+        </div>
+    </div>
+        <ng-template  #noErrors>
+            <div *ngIf="toDisplay" class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let csvHeader of correctCsvHeaders">
+                                {{csvHeader}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let row of csvData">
+                          <tr>
+                                <td> {{row.id}}</td>
+                                <td> {{row.title}}</td>
+                                <td> {{row.price}}</td>
+                                <td> {{row.brand}}</td>
+                                <td> {{row.quantity}}</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>                  
+                </table>
+            </div> 
+        </ng-template>
+</div>
+
+    <!-- todo add sticky table header and bg-light -->
+    <!-- todo add safe check in html too -->
+
+    <!-- todo to change table header into captial -->

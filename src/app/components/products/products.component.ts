@@ -11,37 +11,33 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
-  allProducts:any;
-  productList : any;
-  priceMax:number = 150000
-  priceMin:number = 0
-  currentRating:number = 0
-  sortedIn:string = 'none'
+  private allProducts:any;
+  public productList : any;
+  public priceMax:number = 150000
+  public priceMin:number = 0
+  public currentRating:number = 0
+  public sortedIn:string = 'alphabeticallySort'
   constructor(private productGetService : ProductGetService,public addToCart:AddToCartService,public toast:ToastService){
-    //todo correcting service/function naming convention
     productGetService.getProducts().subscribe((data)=>{
       this.allProducts = data;
       this.productList = this.allProducts?.products;
-      // console.log(this.productList)
+      this.preSort()
     });
   }
 
-  // filterForm = new FormGroup({
-  //   price : new FormControl(200000),
-  //   rating : new FormControl(0)
-  // })
-  // todo correct function identation
   updateProducts(form:any){    
-    // let currentPrice:any = 1, currentRating:any = 0 //todo convert any to number for obvious variables
-    this.priceMax = form['price-max']; 
-    this.priceMin = form['price-min']; 
-    this.currentRating = form['rating'];//todo convert reactive form into template forms
+    this.priceMax = form?.['price-max']; 
+    this.priceMin = form?.['price-min']; 
+    this.currentRating = form?.['rating'];
+    if(!this.validateFilterValues()) return;
     if(this.priceMin > this.priceMax){
-      this.toast.handleError("Min price can't be greater than max price")
-      return
+      this.toast.handleError("Min price can't be greater than max price")//todo reset(function) the values for invalid price
+      this.priceMin = this.priceMax;
+      return;
     }
     this.productList = this.applyFilter()
     this.preSort()
+    this.toast.handleSuccess("Filter Applied")
   }
 
   updateQuantity(id:any,element:any){  
@@ -52,14 +48,17 @@ export class ProductsComponent {
     }
     if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
       let quan:any = this.addToCart.getQuantity(id)
-      element.value = quan//todo throw a toast for -ve values
-      if(parseInt(newQuantity) < 0) this.toast.handleError("Quantity can't be negative")
-      else this.toast.handleError("Quanity should not be fractional")
+      element.value = quan
+      this.toast.handleError((parseInt(newQuantity) < 0)?"Quantity can't be negative":"Quanity should not be fractional")
       return
-    }//todo decimal should not pass
+    }
+    if(parseInt(newQuantity) > 99){ 
+      this.toast.handleError("Max quantity can not be more than 99")
+      newQuantity = 99;
+    }
     this.addToCart.updateQuantity(id,newQuantity)
    }
-
+//todo to limit quantity to 99
   lowToHighSort(){
     this.productList.sort((a:any,b:any)=> a?.price - b?.price);
     this.sortedIn = "lowToHighSort";
@@ -98,7 +97,7 @@ export class ProductsComponent {
         return;
     }
   }
-  
+
   applyFilter(){
     let afterFilter:any = []
     for(let item of this.allProducts?.products){
@@ -109,4 +108,40 @@ export class ProductsComponent {
     // return this.allProducts.products.filter((item:any) => item.price <= this.priceMax && 
     // item.price <= this.priceMin && item.rating >= this.currentRating);
   }
+
+  resetFilter(){
+    this.priceMin = 0
+    this.priceMax = 150000
+    this.currentRating = 0
+    this.productList = this.allProducts.products
+    this.sortedIn = "alphabeticallySort"
+  }
+
+  validateFilterValues(){
+    console.log(this.priceMin);
+    
+    if(this.priceMin < 0){
+      this.toast.handleError("Min price can not be negative");
+      return false;
+    }
+    if(this.priceMax < 0){
+      this.toast.handleError("Max price can not be negative");
+      return false;
+    }
+    if(isNaN(this.priceMin) || isNaN(this.priceMax)){
+
+      this.toast.handleError("Price should be a number")
+      return false;
+    }
+    return true;
+  }
 }
+
+//todo reset all filters
+//todo add categories filter
+//todo remove filter button
+//todo toast for succesful filter
+//todo change the min max filter layout
+//todo add the hover pointer buttons
+
+//todo add semicolon

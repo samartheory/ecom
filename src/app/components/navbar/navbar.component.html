@@ -1,37 +1,69 @@
-<nav class="navbar bg-secondary-subtle pe-2">
-  <div class="d-flex ms-3">
-    <div class="p-1 w-100">
-    
-      <a class="navbar-brand" (click)="redirectToProducts()">
-          <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-        Increff ECOM
+<!-- <nav class="navbar bg-secondary-subtle pe-2">
+    <div class="d-flex ms-3">
+      <div class="p-1 me-auto">
+        <a class="navbar-brand" (click)="redirectToProducts()">
+            <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+          Increff ECOM
+        </a>
+      </div>
+      <div class="ms-auto">
+        <a class="mdi mdi-cart-outline me-3 position-relative mdi-24px" (click)="redirectToCart()"><div
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="getTotal() > 0">
+          {{getTotal()}}
+        </div>
       </a>
+      <a class="mdi mdi-file-upload-outline mdi-24px" routerLink="/upload"></a>
+      <div class="dropdown p-1" *ngIf="ifLoggedIn() else accountButton">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{getUsername()}}
+        </button>
+        <div class="dropdown-menu">
+          <span><a class="dropdown-item pointer" (click)="logOut()">Log Out</a></span>
+        </div>
+      </div>
+      </div>
     </div>
-    <!-- <span class="fs-6 me-3 bold fw-bold" style="opacity: 20%">admin@increff.com</span> -->
-    <a class="mdi mdi-cart flex-shrink-1 me-3 position-relative" (click)="redirectToCart()"><div
+  </nav>
+
+
+<ng-template #accountButton>
+    <a class="mx-3 text-decoration-none mt-2" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="ifLogin()">
+      <i class="mdi mdi-login mdi-24px"></i>
+      <span class="mx-2 text-primary fs-4">Login</span>
+    </a>
+</ng-template> -->
+
+
+
+<nav class="navbar bg-body-secondary px-3 sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" (click)="redirectToProducts()">
+      <img src="../../../assets/inclogo.png" alt="Logo" width="30" height="30" class="pointer">
+      <span class="ps-2">Increff ECOM</span>
+    </a>
+    <form class="d-flex">
+      <a class="mdi mdi-cart-outline me-3 position-relative mdi-24px pointer" (click)="redirectToCart()"><div
         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="getTotal() > 0">
         {{getTotal()}}
       </div>
     </a>
-    <a class="mdi mdi-file-upload-outline " routerLink="/upload"></a>
-    <!-- <a class="mdi mdi-account-circle flex-shrink-1 me-3" (click)="handleLoginClick()"></a> -->
-    <div class="dropdown p-1" *ngIf="ifLoggedIn() else accountButton">
+    <a class="mdi mdi-file-upload-outline mdi-24px" routerLink="/upload"></a>
+    <div class="dropdown" *ngIf="ifLoggedIn() else accountButton">
       <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{getUsername()}}
       </button>
       <div class="dropdown-menu">
-        <span><a class="dropdown-item" (click)="logOut()">Log Out</a></span>
+        <span><a class="dropdown-item pointer" (click)="logOut()">Log Out</a></span>
       </div>
     </div>
+    </form>
   </div>
 </nav>
 
+
 <ng-template #accountButton>
-  <div class="dropdown ms-3 me-3" *ngIf="ifLogin()">
-    <a class="dropdown-toggle mdi mdi-account-circle flex-shrink-1" data-bs-toggle="dropdown" aria-expanded="false">
-    </a>
-    <div class="dropdown-menu dropdown-menu-end">
-        <span><a class="dropdown-item" (click)="redirectLogin()">Login</a></span>
-    </div>
-</div>
-</ng-template>
+  <a class="ms-3 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="ifLogin()" routerLink="/login">
+    <i class="mdi mdi-login mdi-24px"></i>
+    <span class="text-primary fs-4">Login</span>
+  </a>
+</ng-template> 

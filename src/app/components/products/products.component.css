@@ -1,15 +1,10 @@
-
 .filter-sort{
   background-color: #e2e3e5;
-  top: 6rem;
-  height: 80vh;
-  border-radius: 0.5rem;
+  top: 5.5rem;
+  height: 87vh;
 }
 .thumbnail{
 aspect-ratio: 1;
-}
-.form-control{
-  font-size: 0.8rem;
 }
 .max-width{
   max-width: 2.5rem;

@@ -1,60 +1,56 @@
 <div class="container">
-  <!-- todo use either container or row/column-->
   <div class="row mt-5">
     <div class="col-lg-5 col-md-6 col-sm-10" >
-      <!-- todo explore position  -->
-      <!-- <img src="" alt="prod" style="aspect-ratio: 1;" width="500px"> -->
-      <div id="product-carousel" class="carousel slide m-2">
+      <div id="product-carousel" class="carousel slide m-2" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <!-- todo use parent container for image sizing -->
-            <!-- todo images classes -->
-              <!-- <img src={{reqProduct.thumbnail}}  class="img-fluid my-auto" alt="..."> -->
-              <img src={{reqProduct.thumbnail}}  class="img-fluid aspect-1 rounded" alt="...">
+            <div class="ratio ratio-4x3">
+              <img src={{reqProduct.thumbnail}}  class="img-fluid rounded" alt="...">
+            </div>
           </div>
           <div *ngFor="let image of reqProduct.images">
             <div class="carousel-item">
-              <img src="{{image}}" class="img-fluid aspect-1 rounded" alt="...">
+              <div class="ratio ratio-4x3">
+                <img src="{{image}}" class="img-fluid rounded" alt="...">
+              </div>
             </div>
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#product-carousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon" ></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#product-carousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="carousel-control-next-icon" ></span>
         </button>
       </div>
     </div>
     <div class="col-sm-6 col-md-6 col-lg-6">
       <div class="d-flex flex-column align-items-start">
-        <div class="fs-5 fw-bold text-muted">{{reqProduct.brand}}</div>
-      <!-- todo dont use col and d-flex in same class -->
-        <div class="fs-1">{{reqProduct.title}}</div>
-        <!-- todo use bootstrap classes for font size -->
+        <span class="fs-5 text-muted">{{reqProduct.brand}}</span>
+        <span class="fs-2">{{reqProduct.title}}</span>
         <div class="d-flex align-items-baseline">
           <div class="price fs-4">₹{{reqProduct.price|number:'1.2-2' }}</div>
-          <!-- todo use pipes instead commas -->
-          <span class=" ms-4 fs-4"><i class="mdi mdi-star text-warning"></i> {{reqProduct?.rating}} / 5</span>
+          <span class="ms-4 fs-6">
+            <i class="mdi mdi-star text-warning"></i> 
+            {{reqProduct?.rating}} / 5
+          </span>
         </div>
           <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="addToCart.addNewItem(reqProduct.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
-        <div>
+        <p>
           {{reqProduct?.description}}
-        </div>
+        </p>
       </div>
     </div>
-
   </div>
 </div>
 
 <ng-template #quantitySetter>
   <span class="input-group mt-2 mb-3 width-10">
     <button type="button" class="btn btn-secondary" (click)="decreaseQuantity()">-</button>
-    <!-- <input type="number" class="form-control" [(ngModel)]="quantity" readonly> -->
-    <input type="number" class="form-control" [value]="addToCart.getQuantity(reqProduct.id)"
-              (change)="cartQuantity(reqProduct.id,quantitySpy)" #quantitySpy>
+    <input type="number" class="form-control" [value]="addToCart.getQuantity(reqProduct?.id)"
+              (change)="cartQuantity(reqProduct?.id,quantitySpy)" #quantitySpy>
     <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
     <button type="button" class="btn btn-danger"
-      (click)="addToCart.removeItem(reqProduct.id)"><i class="mdi mdi-trash-can-outline"></i></button>
+      (click)="addToCart.removeItem(reqProduct?.id)"><i class="mdi mdi-trash-can-outline"></i></button>
   </span>
 </ng-template>

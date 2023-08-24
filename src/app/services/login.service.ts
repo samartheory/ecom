@@ -6,8 +6,8 @@ import { AddToCartService } from './add-to-cart.service';
   providedIn: 'root'
 })
 export class LoginService {
-  users:any
-  usersData:any
+  private users:any
+  private usersData:any
   constructor(private http:HttpClient) { 
     this.users = this.http.get('../../assets/users.json')
     this.users.subscribe((data:any)=>{

@@ -1,25 +1,9 @@
-.title{
-    font-size: 3em;
+.w-2{
+    width:2rem;
 }
-.img-thumbnail{
-    width: 120px;
+.img-width{
+    width: 9em; 
 }
-#title{
-    font-size: 2em;
-    font-weight: bold;
-}
-
-.img-aspect{
-    aspect-ratio: 1;
-    width: 9em;
-}
-.input-group{
-    width: 25%;
-}
-.itemCard{
-    border-color: azure;
-    border-width: 10px;
-}
-#emptyText{
-    font-size: 2em;
+.table-top{
+    top:3.6rem;
 }
