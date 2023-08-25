@@ -1,4 +1,4 @@
-<div class="mt-2">
+<div class="mx-4 mt-3">
   <div class="d-flex fs-1 mb-2">
     <i class="mdi mdi-account">
     </i>
@@ -6,10 +6,9 @@
       User Login
     </span>
   </div>
-  <form #loginForm="ngForm" (ngSubmit)="submit(loginForm.value)">
+  <form #loginForm="ngForm" (ngSubmit)="submit(loginForm?.value)">
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-6 col-xl-3">
-        <!--  todo make these cols responsive-->
         <div class="form-floating mb-3">
           <input class="form-control" type="email" id="floating-input" name="email" placeholder="name@example.com"
             email required ngModel #emailSpy="ngModel" [ngClass]="{'is-invalid': !emailSpy.valid && (emailSpy.dirty)}">
@@ -30,11 +29,9 @@
   
     <div class="row">
       <div class="col-6 mt-3">
-        <button type="button" class="btn btn-secondary" type="submit" [disabled]="!loginForm.valid">Submit</button>
+        <button type="button" class="btn btn-secondary" type="submit" [disabled]="!loginForm?.valid">Submit</button>
       </div>
     </div>
   </form>
 </div>
 
-
-<!-- final todo view spacing accross pages -->

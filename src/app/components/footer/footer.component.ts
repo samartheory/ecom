@@ -8,13 +8,13 @@ import { Component } from '@angular/core';
 export class FooterComponent {
   public currentDateTime: string = '';
   ngOnInit() {
-    this.updateTime(); // Initial call
+    this.updateTime(); 
     setInterval(() => {
-      this.updateTime(); // Update every second
+      this.updateTime(); 
     }, 1000);
   }
   updateTime(): void {
     const currentDate = new Date();
-    this.currentDateTime = currentDate.toLocaleString(); // Adjust formatting as needed
+    this.currentDateTime = currentDate.toLocaleString(); 
   }
 }

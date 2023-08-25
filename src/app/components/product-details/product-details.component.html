@@ -5,7 +5,7 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="ratio ratio-4x3">
-              <img src={{reqProduct.thumbnail}}  class="img-fluid rounded" alt="...">
+              <img src={{reqProduct?.thumbnail}}  class="img-fluid rounded" alt="...">
             </div>
           </div>
           <div *ngFor="let image of reqProduct.images">
@@ -26,16 +26,16 @@
     </div>
     <div class="col-sm-6 col-md-6 col-lg-6">
       <div class="d-flex flex-column align-items-start">
-        <span class="fs-5 text-muted">{{reqProduct.brand}}</span>
-        <span class="fs-2">{{reqProduct.title}}</span>
+        <span class="fs-5 text-muted">{{reqProduct?.brand}}</span>
+        <span class="fs-2">{{reqProduct?.title}}</span>
         <div class="d-flex align-items-baseline">
-          <div class="price fs-4">₹{{reqProduct.price|number:'1.2-2' }}</div>
+          <div class="price fs-4">₹{{reqProduct?.price|number:'1.2-2' }}</div>
           <span class="ms-4 fs-6">
-            <i class="mdi mdi-star text-warning"></i> 
             {{reqProduct?.rating}} / 5
+            <i class="mdi mdi-star text-warning"></i> 
           </span>
         </div>
-          <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct.id) else quantitySetter" (click)="addToCart.addNewItem(reqProduct.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
+          <button type="button" class="btn btn-primary mt-2 mb-3" *ngIf="addToCart.toDisplay(reqProduct?.id) else quantitySetter" (click)="addToCart.addNewItem(reqProduct?.id);toast.handleSuccess('Added To Cart')">Add to Cart</button>
         <p>
           {{reqProduct?.description}}
         </p>
@@ -47,7 +47,7 @@
 <ng-template #quantitySetter>
   <span class="input-group mt-2 mb-3 width-10">
     <button type="button" class="btn btn-secondary" (click)="decreaseQuantity()">-</button>
-    <input type="number" class="form-control" [value]="addToCart.getQuantity(reqProduct?.id)"
+    <input type="number" class="form-control text-center" [value]="addToCart.getQuantity(reqProduct?.id)"
               (change)="cartQuantity(reqProduct?.id,quantitySpy)" #quantitySpy>
     <button type="button" class="btn btn-secondary" (click)="increaseQuantity()">+</button>
     <button type="button" class="btn btn-danger"

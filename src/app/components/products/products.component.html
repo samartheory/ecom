@@ -10,33 +10,33 @@
         <div class="row p-2">
             <div *ngFor="let item of productList" class="col-md-6 col-lg-4 col-xl-3">
                 <div class="card mb-4">
-                    <div [routerLink]="['/product-detail', item.id]">
-                        <img src="{{item.thumbnail}}" class="card-img-top thumbnail" alt="...">
+                    <div [routerLink]="['/product-detail', item?.id]">
+                        <img src="{{item?.thumbnail}}" class="card-img-top thumbnail c-pointer" alt="...">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title text-truncate ">{{item.title}}</h5>
+                        <h5 class="card-title text-truncate ">{{item?.title}}</h5>
                         <div class="row mb-3">
                             <div class="col-12 d-flex">
-                                <span class="card-text fs-5 fw-normal">₹{{item.price|number:'1.2-2'}} </span>
-                                <span class="ms-auto">{{item.rating}} <i class="mdi mdi-star text-warning"></i></span>
+                                <span class="card-text fs-5 fw-normal">₹{{item?.price|number:'1.2-2'}} </span>
+                                <span class="ms-auto">{{item?.rating}} <i class="mdi mdi-star text-warning"></i></span>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <button type="button" class="btn btn-primary col-6 mx-auto"
-                                *ngIf="addToCart.toDisplay(item.id)"
+                                *ngIf="addToCart.toDisplay(item?.id)"
                                 (click)="addToCart.addNewItem(item.id);toast.handleSuccess('Added To Cart')">Add to
                                 Cart
                             </button>
-                                <div class="input-group justify-content-center" *ngIf="!addToCart.toDisplay(item.id)">
+                                <div class="input-group justify-content-center" *ngIf="!addToCart.toDisplay(item?.id)">
                                     <button type="button" class="btn btn-secondary"
-                                        (click)="addToCart.decreaseQuantity(item.id)">-</button>
-                                    <input type="number" class="form-control max-width"
-                                        [value]="addToCart.getQuantity(item.id)"
-                                        (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>
+                                        (click)="addToCart.decreaseQuantity(item?.id)">-</button>
+                                    <input type="number" class="form-control max-width text-center"
+                                        [value]="addToCart.getQuantity(item?.id)"
+                                        (change)="updateQuantity(item?.id,quantitySpy)" #quantitySpy>
                                     <button type="button" class="btn btn-secondary"
-                                        (click)="addToCart.increaseQuantity(item.id)">+</button>
+                                        (click)="addToCart.increaseQuantity(item?.id)">+</button>
                                     <button type="button" class="btn btn-danger ms-1"
-                                        (click)="addToCart.removeItem(item.id)"><i class="mdi mdi-trash-can-outline fs-6"></i></button>
+                                        (click)="addToCart.removeItem(item?.id)"><i class="mdi mdi-trash-can-outline fs-6"></i></button>
                                 </div>
                         </div>
                     </div>
@@ -80,10 +80,10 @@
             </div>
         </div>
         <input type="range" class="form-range input-range" min="1" max="150000" step="100" name="priceMax" [(ngModel)]="priceMax">
-        <label for="rating" class="form-label mt-4">Rated Above {{currentRating}}<i class="mdi mdi-star text-warning"></i></label>
+        <label for="rating" class="form-label mt-4">Rated Above {{currentRating}}/5<i class="mdi mdi-star text-warning"></i></label>
         <input type="range" class="form-range" min="0" max="5" step="0.1" id="rating" name="rating" [(ngModel)]="currentRating">
         <div class="d-flex">
-            <button class="btn btn-primary btn-sm mt-4" type="submit">Filter <i class="mdi mdi-filter"></i></button>
+            <button class="btn btn-primary btn-sm mt-4" type="submit" data-bs-dismiss="offcanvas">Filter <i class="mdi mdi-filter"></i></button>
             <button class="btn btn-danger btn-sm mt-4 ms-1" type="submit" (click)="resetFilter()">Reset </button>
         </div>
         <div class="dropdown mt-2">

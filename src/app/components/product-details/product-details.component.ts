@@ -16,8 +16,8 @@ export class ProductDetailsComponent {
   private quantity:any;
   constructor(private route: ActivatedRoute,private productGetService : ProductGetService,private router:Router,public addToCart : AddToCartService,public toast : ToastService) {
     this.productId = this.route.snapshot.paramMap?.get('id') as string;
-    if(this.productId) this.getAllProducts()
-    this.updateQuantity()
+    if(this.productId) this.getAllProducts();
+    this.updateQuantity();
   }
 
   getAllProducts(){
@@ -25,40 +25,41 @@ export class ProductDetailsComponent {
       this.allProducts = data;
       this.reqProduct = this.allProducts?.products?.find((product: any) => product?.id == this.productId);
       if(!this.reqProduct){
-        this.router.navigate(['/not-found'])
+        this.router.navigate(['/not-found']);
       }
     });
   }
 
   increaseQuantity(){
-    this.addToCart.increaseQuantity(this.productId)
-    this.updateQuantity()
+    this.addToCart.increaseQuantity(this.productId);
+    this.updateQuantity();
   }
   decreaseQuantity(){
-    this.addToCart.decreaseQuantity(this.productId)
-    this.updateQuantity()
+    this.addToCart.decreaseQuantity(this.productId);
+    this.updateQuantity();
   }
   updateQuantity(){
-    this.quantity = this.addToCart.getQuantity(this.productId)
+    this.quantity = this.addToCart.getQuantity(this.productId);
   }
 
   cartQuantity(id:any,element:any){
-    let newQuantity:any = element.value
+    let newQuantity:any = element.value;
     if(isNaN(newQuantity)){
-      this.toast.handleError("Quantity received is invalid")
-      return
+      this.toast.handleError("Quantity received is invalid");
+      return;
     }
-    if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0)){
-      let quan:any = this.addToCart.getQuantity(id)
-      element.value = quan
-      this.toast.handleError(parseInt(newQuantity) < 0 ? "Quantity can't be negative" : "Quanity should not be fractional")
-      return
+    if(parseInt(newQuantity) < 0 || !(parseFloat(newQuantity)%1 == 0) || newQuantity.toString().includes('e')){
+      let quan:any = this.addToCart.getQuantity(id);
+      element.value = quan;
+      this.toast.handleError((parseInt(newQuantity) < 0)?"Quantity can't be negative":
+      (!(parseFloat(newQuantity)%1 == 0)?"Quantity should not be fractional":"Scientific notation not allowed"));
+      return;
     }
     if(parseInt(newQuantity) > 99){ 
-      this.toast.handleError("Max quantity can not be more than 99")
+      this.toast.handleError("Max quantity can not be more than 99");
       newQuantity = 99;
     }
-    this.addToCart.updateQuantity(id,newQuantity)
+    this.addToCart.updateQuantity(id,newQuantity);
   }
 }
 

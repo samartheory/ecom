@@ -1,12 +1,11 @@
 .filter-sort{
-  background-color: #e2e3e5;
-  top: 5.5rem;
-  height: 87vh;
+  top: 2rem;
+  height: 81vh;
 }
 .thumbnail{
 aspect-ratio: 1;
 }
 .max-width{
-  max-width: 2.5rem;
+  max-width: 2.8rem;
 }
 

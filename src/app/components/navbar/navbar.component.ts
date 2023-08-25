@@ -22,28 +22,28 @@ export class NavbarComponent {
   }
 
   redirectToCart(){
-    this.router.navigate(['/cart'])
+    this.router.navigate(['/cart']);
   }
 
   redirectToProducts(){
-    this.router.navigate(['/products'])
+    this.router.navigate(['/products']);
   }
 
   getTotal(){
-    return this.addToCart.getTotalItemsInCart()
+    return this.addToCart.getTotalItemsInCart();
   }
 
   redirectLogin(){
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login']);
   }
 
   logOut(){
-    this.login.logOut()
-    this.router.navigate(['/login'])
+    this.login.logOut();
+    this.router.navigate(['/login']);
   }
 
   getUsername(){
-    return this.login.getEmail()
+    return this.login.getEmail();
   }
 
   ifLogin(){
@@ -53,6 +53,6 @@ export class NavbarComponent {
 
   ifLoggedIn(){
     if(this.location.path() == '/login')return false;
-    return this.login.isLoggedIn()
+    return this.login.isLoggedIn();
   }
 }

@@ -1,9 +1,4 @@
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.c-pointer {
-  cursor: pointer;
+.height-from-navbar{
+  min-height: calc(100vh - 61px);
+  max-height: calc(100vh - 61px);
 }

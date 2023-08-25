@@ -1,58 +1,62 @@
 <div class="container">
-        <span class="fs-2">
-            Cart
-        </span>      
-    <div class="row mt-2" *ngIf="addToCart.getTotalItemsInCart() > 0 else isEmpty">
-        <div class="col-10">
-            <table class="table align-middle">    
-                <thead>
-                    <tr>
-                        <th scope="col" class="sticky-top table-top bg-light">Image</th>
-                        <th scope="col" class="sticky-top table-top bg-light">Name</th>
-                        <th scope="col" class="sticky-top table-top bg-light">Price</th>
-                        <th scope="col" class="sticky-top table-top bg-light">Total Price</th>
-                        <th scope="col" class="sticky-top table-top bg-light">Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of inCart" >
-                        <td [routerLink]="['/product-detail', item.id]">
-                            <div class="ratio ratio-1x1 img-width">
-                                <img src="{{item.thumbnail}}" class="img-fluid img-aspect rounded" alt="...">
-                            </div>
-                        </td>
-                            <td >
-                                {{item.title}}
+    <span class="fs-2">
+        Cart
+    </span>      
+    <div class="row mt-2 " *ngIf="addToCart.getTotalItemsInCart() > 0 else isEmpty">
+        <div class="col-10 col-md col-sm-12">
+            <div class="table-width">
+                <table class="table align-middle">    
+                    <thead>
+                        <tr>
+                            <th scope="col" class="sticky-top table-top bg-light">Image</th>
+                            <th scope="col" class="sticky-top table-top bg-light">Name</th>
+                            <th scope="col" class="sticky-top table-top bg-light">Price</th>
+                            <th scope="col" class="sticky-top table-top bg-light">Total Price</th>
+                            <th scope="col" class="sticky-top table-top bg-light">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of inCart" >
+                            <td [routerLink]="['/product-detail', item?.id]">
+                                <div class="ratio ratio-1x1 img-width c-pointer">
+                                    <img src="{{item?.thumbnail}}" class="img-fluid img-aspect rounded" alt="...">
+                                </div>
                             </td>
+                                <td >
+                                    {{item?.title}}
+                                </td>
+                                <td >
+                                    ₹{{(item?.price)|number:'1.2-2'}}
+                                </td>
+                                <td >
+                                    ₹{{getQuantityTotal(item?.id,item?.price)|number:'1.2-2'}}
+                                </td>
                             <td >
-                                ₹{{(item.price)|number:'1.2-2'}}
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item?.id)">-</button>
+                                    <input type="number" class="w-2 border text-center" [value]="addToCart.getQuantity(item?.id)"
+                                        (change)="updateQuantity(item?.id,quantitySpy)" #quantitySpy>  
+                                    <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item?.id)">+</button>
+                                    <button type="button" class="btn btn-danger" (click)="removeItem(item?.id)"><span
+                                        class="mdi mdi-trash-can-outline"></span></button>
+                                </div>
+                                
                             </td>
-                            <td >
-                                ₹{{getQuantityTotal(item.id,item.price)|number:'1.2-2'}}
-                            </td>
-                        <td >
-                            <div class="input-group">
-                                <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.id)">-</button>
-                                <input type="number" class="w-2 border text-center" [value]="addToCart.getQuantity(item.id)"
-                                    (change)="updateQuantity(item.id,quantitySpy)" #quantitySpy>  
-                                <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.id)">+</button>
-                                <button type="button" class="btn btn-danger" (click)="removeItem(item.id)"><span
-                                    class="mdi mdi-trash-can-outline"></span></button>
-                            </div>
-                            
-                        </td>
-                </tr> 
-                </tbody>
-            </table>
-            <div *ngIf="addToCart.getTotalItemsInCart() > 0">
-                ₹{{(totalPrice)|number:'1.2-2'}}/-
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-danger  " (click)="clearCart()">Clear Cart</button>
-                <button type="button" class="btn btn-secondary ms-2" (click)="placeOrder()">Place Order</button>
+                    </tr> 
+                    </tbody>
+                </table>
             </div>
         </div>
-        
+        <div class="col-lg-2 col-md-4 col-sm-5 ">
+            <span class="fs-3">Cart Total</span>
+            <div *ngIf="addToCart.getTotalItemsInCart() > 0" class="fs-5">
+                ₹{{(totalPrice)|number:'1.2-2'}}/-
+            </div>
+            <div class="d-flex mt-2 text-nowrap flex-column">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cartModal">Clear Cart</button>
+                <button type="button" class="btn btn-secondary btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#placeModal">Place Order</button>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -65,4 +69,38 @@
     </div>
 </ng-template>
 
-<!-- todo to change total layout -->
+<div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="placeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="placeModalLabel">Place Order</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+           Do you want to place the order? 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="placeOrder()" data-bs-dismiss="modal">Place</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="cartModalLabel">Clear Cart</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+           Do you want to clear the cart? 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="clearCart()" data-bs-dismiss="modal">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>

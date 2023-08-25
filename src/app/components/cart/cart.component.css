@@ -4,6 +4,13 @@
 .img-width{
     width: 9em; 
 }
-.table-top{
+/* .table-top{
     top:3.6rem;
+} */
+/* .price-total-top{
+    top: 3.6rem;
+    height: 27vh;
+} */
+.table-width{
+    min-width: 50rem;
 }
